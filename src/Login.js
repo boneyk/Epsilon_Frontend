@@ -1,10 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export const Login = () => (
   <div>
     <Container>
-      <Row className="vh-100 d-flex justify-content-center align-items-center" >
+      <Row className="vh-100 d-flex justify-content-center align-items-center">
         <Col md={8} lg={6} xs={12}>
           <Card className="shadow px-4" style={{ backgroundColor: "#DDDFEB", borderColor: "#DDDFEB" }}>
             <Card.Body>
@@ -26,25 +27,18 @@ export const Login = () => (
                     </Form.Group>
 
                     <div className="d-grid mb-3">
+                      
                         <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C" }}>
-                            Вход
+                        <Link to="api">Вход</Link>
                         </Button>
+                      
                     </div>
 
                     <div className="d-grid mb-3">
                         <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C" }}>
-                            Регистрация
+                        <Link to="api/reg">Регистрация</Link>
                         </Button>
-                    </div>
-
-
-                    <div className="d-grid">
-                      <p className="mb-0 text-center">
-                        Already have an account?{" "}
-                        <a href="{''}" className="text-primary fw-bold">
-                          Sign In
-                        </a>
-                      </p>
+                    
                     </div>
                   </Form>
                 </div>

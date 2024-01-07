@@ -1,5 +1,6 @@
 import React from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export const Reg = () => (
     <div>
@@ -48,9 +49,17 @@ export const Reg = () => (
                       </Form.Group>
                       <div className="d-grid">
                         <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C" }}>
-                          Зарегистрироваться
+                        <Link to="/">Зарегистрироваться</Link>
                         </Button>
                       </div>
+                      <div className="d-grid">
+                      <p className="mb-0 text-center">
+                        Уже есть аккаунт?{" "}
+                        <a  className="text-primary fw-bold">
+                        <Link to="/">Войти</Link>
+                        </a>
+                      </p>
+                    </div>
                     </Form>
                   </div>
                 </div>
