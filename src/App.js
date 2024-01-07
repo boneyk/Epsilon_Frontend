@@ -6,18 +6,22 @@ import { Favorite } from "./Favorite";
 import { Profile } from "./Profile";
 import { Tours } from "./Tours";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {Login} from "./Login"
+import {Reg} from "./Reg"
+
 
 function App() {
   return (
     <>
-      <Router>
+      {/* <Router>
         <Navibar />
         <Routes>
           <Route path="/api/tours/favorite" element={<Favorite/>} />
           <Route path="/api/users/info" element={<Profile/>} />
           <Route path="api/tours" element={<Tours/>} />
         </Routes>
-      </Router>
+      </Router> */}
+      <Reg/>
     </>
   );
 }

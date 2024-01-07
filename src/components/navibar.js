@@ -12,9 +12,9 @@ export default function navibar() {
               <img src="/img/touragency.png" className="navimg" alt="tourAgency icon"/></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="navelements">
+          <Nav className="navelements" defaultActiveKey="catalog">
           <h1 style={{ fontSize: "15px", textAlign: "center" }}>Служба поддержки: <br/> 8 (900) 000 - 00 - 00</h1>
-          <Nav.Link><Link to ="api/tours/favorite">
+          <Nav.Link eventKey="favorite"><Link to ="api/tours/favorite">
             <div style={{ textAlign: "center" }} className="navtext">
               <img
               src="/img/favorite.png"
@@ -26,7 +26,7 @@ export default function navibar() {
             <div>Избранное</div>
           </div>
           </Link></Nav.Link>
-          <Nav.Link><Link to ="api/users/info">
+          <Nav.Link eventKey="profile"><Link to ="api/users/info">
             <div style={{ textAlign: "center" }}  className="navtext">
               <img
               src="/img/profile.png"
@@ -38,7 +38,7 @@ export default function navibar() {
             <div>Профиль</div>
           </div>
           </Link></Nav.Link>
-          <Nav.Link><Link to ="api/tours">
+          <Nav.Link eventKey="catalog"><Link to ="api/tours">
             <div style={{ textAlign: "center" }}  className="navtext">
               <img
               src="/img/catalog.png"
