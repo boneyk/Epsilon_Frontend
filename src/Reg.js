@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Header from "./components/Header";
@@ -10,6 +10,25 @@ export const Reg = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfassword] = useState(""); // создаем состояние для хранения значения пароля
+  const [loginDirty, setLoginDirty] = useState(false);
+  const [emailDirty, setEmailDirty] = useState(false);
+  const [passwordDirty, setPasswordDirty] = useState(false);
+  const [confpasswordDirty, setConfpasswordDirty] = useState(false);
+  const [loginError, setLoginError] = useState("Логин не может быть пустым");
+  const [emailError, setEmailError] = useState("Email не может быть пустым");
+  const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
+  const [confpasswordError, setConfpasswordError] = useState("Пароль не может быть пустым");
+  const [formValid, setFormValid] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [successError, setSuccessError] = useState("Такой пользователь уже существует");
+
+  useEffect(() => {
+    if (!loginDirty && !passwordDirty && !emailDirty && !confpasswordDirty) {
+      setFormValid(true);
+    } else {
+      setFormValid(false);
+    }
+  }, [loginDirty, passwordDirty, emailDirty,confpasswordDirty]);
 
   const handleLoginChange = (event) => {
     setLogin(event.target.value); // обновляем состояние при изменении значения в поле ввода логина
@@ -24,6 +43,39 @@ export const Reg = () => {
     setConfassword(event.target.value); // обновляем состояние при изменении значения в поле ввода пароля
   };
 
+  const blurHandler = (e) => {
+    switch (e.target.name) {
+      case "login":
+        if (login === "") {
+          setLoginDirty(true);
+        } else {
+          setLoginDirty(false);
+        }
+        break;
+      case "password":
+        if (password === "") {
+          setPasswordDirty(true);
+        } else {
+          setPasswordDirty(false);
+        }
+        break;
+      case "email":
+        if (email === "") {
+          setEmailDirty(true);
+        } else {
+          setEmailDirty(false);
+        }
+        break;
+      case "confpassword":
+        if (confpassword === "") {
+          setConfpasswordDirty(true);
+        } else {
+          setConfpasswordDirty(false);
+        }
+        break;
+    }
+  };
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const requestData = {
@@ -43,10 +95,12 @@ export const Reg = () => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
+        setSuccess(false);
       })
       .catch((error) => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
+        setSuccess(true);
       });
   };
 
@@ -63,46 +117,58 @@ export const Reg = () => {
                   <h2 className="mb-2 text-center" style={{ fontSize: '20px' }}>Осталось совсем чуть-чуть и скоро Вы сможете выбрать тур</h2>
                   <div className="mb-3">
                     <Form>
+                    {(loginDirty) && <div style ={{color:'red'}}>{loginError}</div>}
                       <Form.Group className="mb-3" controlId="Login">
                         <Form.Label className="text-center">
                           Логин
                         </Form.Label>
                         <Form.Control type="text"
+                        name="login"
                           placeholder="Введите логин"
                           value={login}
-                          onChange={handleLoginChange}/>
+                          onChange={handleLoginChange}
+                          onBlur={e=>blurHandler(e)}/>
                       </Form.Group>
 
+                      {(emailDirty) && <div style ={{color:'red'}}>{emailError}</div>}
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">
                           Email
                         </Form.Label>
                         <Form.Control type="email" 
+                        name="email"
                           placeholder="Введите email"
                           value={email}
                           onChange={handleEmailChange}
+                          onBlur={e=>blurHandler(e)}
                          />
                       </Form.Group>
 
+                      {(passwordDirty) && <div style ={{color:'red'}}>{passwordError}</div>}
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
                       >
                         <Form.Label>Пароль</Form.Label>
                         <Form.Control type="password"
+                        name="password"
                           placeholder="Введите пароль"
                           value={password}
-                          onChange={handlePasswordChange} />
+                          onChange={handlePasswordChange}
+                          onBlur={e=>blurHandler(e)} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
                       >
+                      {(confpasswordDirty) && <div style ={{color:'red'}}>{confpasswordError}</div>}
                         <Form.Label> Пароль</Form.Label>
                         <Form.Control type="password"
+                        name="confpassword"
                           placeholder="Повторите пароль"
                           value={confpassword}
-                          onChange={handleConfpasswordChange} />
+                          onChange={handleConfpasswordChange}
+                          onBlur={e=>blurHandler(e)} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
@@ -110,9 +176,12 @@ export const Reg = () => {
                       >
                       </Form.Group>
                       <div className="d-grid">
-                        <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"}} onClick={handleSubmit}>
-                        <Link to="/" style={{ textDecoration: 'none',color: "white" }}>Зарегистрироваться</Link>
+                        <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"}} onClick={handleSubmit} disabled = {!formValid}>
+                        <Link style={{ textDecoration: 'none',color: "white" }} onAbort={!success} 
+                        // to="/"
+                        >Зарегистрироваться</Link>
                         </Button>
+                      {(success) && <div style ={{color:'red'}}>{successError}</div>}
                       </div>
                       <div className="d-grid">
                       <p className="mb-0 text-center">
