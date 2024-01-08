@@ -12,6 +12,9 @@ const [passwordDirty, setPasswordDirty] = useState(false);
 const [loginError, setLoginError] = useState("Логин не может быть пустым");
 const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
 const [formValid, setFormValid] = useState(false);
+const [success, setSuccess] = useState(false);
+const [successError, setSuccessError] = useState("Неправильно введен логин или пароль");
+
 
 useEffect(() => {
   if (!loginDirty && !passwordDirty) {
@@ -66,10 +69,12 @@ const blurHandler = (e) => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
+        setSuccess(false);
       })
       .catch((error) => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
+        setSuccess(true);
       });
   };
 
@@ -135,14 +140,16 @@ const blurHandler = (e) => {
                           disabled = {!formValid}
                         >
                           <Link
-                            to="api/tours"
                             style={{
                               textDecoration: "none",color: "white",
                             }}
+                            onAbort={!success}
+                            to="api/tours"
                           >
                             Вход
                           </Link>
                         </Button>
+                        {(success) && <div style ={{color:'red'}}>{successError}</div>}
                       </div>
 
                       <div className="d-grid mb-3">
