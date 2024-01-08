@@ -45,7 +45,7 @@ function App() {
       <Route path="api/reg" element={<Reg />} />
       <Route path="api/tours/favorite" element={<Favorite/>} />
       <Route path="api/users/info" element={<Profile/>} />
-      {/* <Route path="api/tours" element={<Tours />} /> */}
+      <Route path="api/tours" element={<Tours />} />
       </Routes>
       </Router>
       <Fotter/>

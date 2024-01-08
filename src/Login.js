@@ -37,7 +37,6 @@ export const Login = () => {
       .catch((error) => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
-        setErrorMessage("Неправильный логин или пароль");
       });
   };
 
@@ -97,7 +96,7 @@ export const Login = () => {
                           }} onClick={handleSubmit}
                         >
                           <Link
-                            // to="api/tours"
+                            to="api/tours"
                             style={{
                               textDecoration: "none",color: "white",
                             }}

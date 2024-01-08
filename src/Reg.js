@@ -1,9 +1,56 @@
-import React from 'react'
+import React, { useState } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Header from "./components/Header";
+import axios from "axios";
 
-export const Reg = () => (
+
+export const Reg = () => {
+  const [login, setLogin] = useState(""); // создаем состояние для хранения значения логина
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confpassword, setConfassword] = useState(""); // создаем состояние для хранения значения пароля
+
+  const handleLoginChange = (event) => {
+    setLogin(event.target.value); // обновляем состояние при изменении значения в поле ввода логина
+  };
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value); // обновляем состояние при изменении значения в поле ввода логина
+  };
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value); // обновляем состояние при изменении значения в поле ввода пароля
+  };
+  const handleConfpasswordChange = (event) => {
+    setConfassword(event.target.value); // обновляем состояние при изменении значения в поле ввода пароля
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const requestData = {
+      "login": login,
+      "email": email,
+      "password": password,
+      "password_confirm": confpassword
+    };
+    console.log(requestData); // выводим requestData в консоль (для проверки)
+    axios
+      .post("/api/auth/reg", requestData, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      })
+      .then((response) => {
+        // Обработка успешного ответа
+        console.log("Ответ сервера:", response.data);
+      })
+      .catch((error) => {
+        // Обработка ошибки
+        console.error("Ошибка запроса:", error);
+      });
+  };
+
+  return (
     <div>
       <Header/>
       <Container style={{paddingTop:'1rem', paddingBottom:'1rem'}}>
@@ -20,14 +67,21 @@ export const Reg = () => (
                         <Form.Label className="text-center">
                           Логин
                         </Form.Label>
-                        <Form.Control type="text" placeholder="Введите логин" />
+                        <Form.Control type="text"
+                          placeholder="Введите логин"
+                          value={login}
+                          onChange={handleLoginChange}/>
                       </Form.Group>
 
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">
                           Email
                         </Form.Label>
-                        <Form.Control type="email" placeholder="Введите email" />
+                        <Form.Control type="email" 
+                          placeholder="Введите email"
+                          value={email}
+                          onChange={handleEmailChange}
+                         />
                       </Form.Group>
 
                       <Form.Group
@@ -35,14 +89,20 @@ export const Reg = () => (
                         controlId="formBasicPassword"
                       >
                         <Form.Label>Пароль</Form.Label>
-                        <Form.Control type="password" placeholder="Введите пароль" />
+                        <Form.Control type="password"
+                          placeholder="Введите пароль"
+                          value={password}
+                          onChange={handlePasswordChange} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
                       >
                         <Form.Label> Пароль</Form.Label>
-                        <Form.Control type="password" placeholder="Повторите пароль" />
+                        <Form.Control type="password"
+                          placeholder="Повторите пароль"
+                          value={confpassword}
+                          onChange={handleConfpasswordChange} />
                       </Form.Group>
                       <Form.Group
                         className="mb-3"
@@ -50,7 +110,7 @@ export const Reg = () => (
                       >
                       </Form.Group>
                       <div className="d-grid">
-                        <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"}}>
+                        <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"}} onClick={handleSubmit}>
                         <Link to="/" style={{ textDecoration: 'none',color: "white" }}>Зарегистрироваться</Link>
                         </Button>
                       </div>
@@ -72,3 +132,4 @@ export const Reg = () => (
       </Container>
     </div>
   );
+};

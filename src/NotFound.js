@@ -12,8 +12,8 @@ export const Notfound = () => (
       </h1>
     </Row>
     <Row className="d-flex justify-content-center align-items-center" style={{paddingBottom:'1rem'}}>
-    <Button variant="primary" type="submit" style={{ width: "80px", height: "50px", backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"  }}>
-      <Link to="/" style={{ textDecoration: 'none', color:'white' }}>Войти</Link>
+    <Button variant="primary" type="submit" style={{ width: "200px", height: "50px", backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"  }}>
+      <Link to="/" style={{ textDecoration: 'none', color:'white' }}>Вернуться ко входу</Link>
     </Button>
     </Row>
     <Row className="d-flex justify-content-center align-items-center">
