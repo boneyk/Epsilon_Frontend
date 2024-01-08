@@ -1,20 +1,53 @@
-import React, { useState,setErrorMessage } from "react";
+import React, { useState,setErrorMessage, useEffect } from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import axios from "axios";
 
 export const Login = () => {
-  const [login, setLogin] = useState(""); // создаем состояние для хранения значения логина
-  const [password, setPassword] = useState(""); // создаем состояние для хранения значения пароля
+  const [login, setLogin] = useState("");
+const [password, setPassword] = useState("");
+const [loginDirty, setLoginDirty] = useState(false);
+const [passwordDirty, setPasswordDirty] = useState(false);
+const [loginError, setLoginError] = useState("Логин не может быть пустым");
+const [passwordError, setPasswordError] = useState("Пароль не может быть пустым");
+const [formValid, setFormValid] = useState(false);
 
-  const handleLoginChange = (event) => {
-    setLogin(event.target.value); // обновляем состояние при изменении значения в поле ввода логина
-  };
+useEffect(() => {
+  if (!loginDirty && !passwordDirty) {
+    setFormValid(true);
+  } else {
+    setFormValid(false);
+  }
+}, [loginDirty, passwordDirty]);
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value); // обновляем состояние при изменении значения в поле ввода пароля
-  };
+const handleLoginChange = (event) => {
+  setLogin(event.target.value);
+};
+
+const handlePasswordChange = (event) => {
+  setPassword(event.target.value);
+};
+
+const blurHandler = (e) => {
+  switch (e.target.name) {
+    case "login":
+      if (login === "") {
+        setLoginDirty(true);
+      } else {
+        setLoginDirty(false);
+      }
+      break;
+    case "password":
+      if (password === "") {
+        setPasswordDirty(true);
+      } else {
+        setPasswordDirty(false);
+      }
+      break;
+  }
+};
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -63,16 +96,19 @@ export const Login = () => {
                   </h2>
                   <div className="mb-3">
                     <Form onSubmit={handleSubmit}>
+                      {(loginDirty) && <div style ={{color:'red'}}>{loginError}</div>}
                       <Form.Group className="mb-3" controlId="Login">
                         <Form.Label className="text-center">Login</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Enter Login"
+                          name="login"
+                          placeholder="Введите логин"
                           value={login}
+                          onBlur={e=>blurHandler(e)}
                           onChange={handleLoginChange}
                         />
                       </Form.Group>
-
+                      {(passwordDirty) && <div style ={{color:'red'}}>{passwordError}</div>}
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
@@ -80,8 +116,10 @@ export const Login = () => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                           type="password"
-                          placeholder="Password"
+                          name = "password"
+                          placeholder="Введите пароль"
                           value={password}
+                          onBlur={e=>blurHandler(e)}
                           onChange={handlePasswordChange}
                         />
                       </Form.Group>
@@ -94,6 +132,7 @@ export const Login = () => {
                             backgroundColor: "#3C5A5C",
                             borderColor: "#3C5A5C",
                           }} onClick={handleSubmit}
+                          disabled = {!formValid}
                         >
                           <Link
                             to="api/tours"
