@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function Navibar() {
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light" defaultActiveKey="catalog">
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light" defaultActiveKey="catalog" style={{ borderBottom: '1px solid black' }}>
         <Container>
           <Navbar.Brand>
             <Link to="/api/tours">

@@ -22,20 +22,20 @@ function App() {
   // fetch('https://jsonplaceholder.typicode.com/todos/1')
   //     .then(response => response.json())
   //     .then(json => console.log(json))
-  axios.post("/api/auth", requestData, {
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-  }
-})
-.then(response => {
-  // Обработка успешного ответа
-  console.log("Ответ сервера:", response.data);
-})
-.catch(error => {
-  // Обработка ошибки
-  console.error("Ошибка запроса:", error);
-});
+//   axios.post("/api/auth", requestData, {
+//   headers: {
+//     "Access-Control-Allow-Origin": "*",
+//     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+//   }
+// })
+// .then(response => {
+//   // Обработка успешного ответа
+//   console.log("Ответ сервера:", response.data);
+// })
+// .catch(error => {
+//   // Обработка ошибки
+//   console.error("Ошибка запроса:", error);
+// });
   return (
     <>
       <Router>
@@ -45,7 +45,7 @@ function App() {
       <Route path="api/reg" element={<Reg />} />
       <Route path="api/tours/favorite" element={<Favorite/>} />
       <Route path="api/users/info" element={<Profile/>} />
-      <Route path="api/tours" element={<Tours />} />
+      {/* <Route path="api/tours" element={<Tours />} /> */}
       </Routes>
       </Router>
       <Fotter/>
