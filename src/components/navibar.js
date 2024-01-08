@@ -1,15 +1,15 @@
 import React from "react";
-import "./navibar.css"
+import "./navibar.css";
 import { Navbar, Nav, Container } from "react-bootstrap";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navibar() {
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" bg="light" variant="light" defaultActiveKey="catalog" initialRouteName="catalog">
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light" defaultActiveKey="catalog">
         <Container>
           <Navbar.Brand>
-            <Link to ="api/tours">
+            <Link to="/api/tours">
               <img src="/img/touragency.png" className="navimg" alt="tourAgency icon"/>
             </Link>
           </Navbar.Brand>
@@ -18,7 +18,7 @@ export default function Navibar() {
             <Nav className="navelements">
               <h1 style={{ fontSize: "15px", textAlign: "center" }}>Служба поддержки: <br/> 8 (900) 000 - 00 - 00</h1>
               <Nav.Link eventKey="favorite">
-                <Link to ="api/tours/favorite">
+                <Link to="/api/tours/favorite" style={{ textDecoration: 'none' }}>
                   <div style={{ textAlign: "center" }} className="navtext">
                     <img
                       src="/img/favorite.png"
@@ -32,7 +32,7 @@ export default function Navibar() {
                 </Link>
               </Nav.Link>
               <Nav.Link eventKey="profile">
-                <Link to ="api/users/info">
+                <Link to="/api/users/info" style={{ textDecoration: 'none' }}>
                   <div style={{ textAlign: "center" }}  className="navtext">
                     <img
                       src="/img/profile.png"
@@ -46,7 +46,7 @@ export default function Navibar() {
                 </Link>
               </Nav.Link>
               <Nav.Link eventKey="catalog">
-                <Link to ="api/tours">
+                <Link to="/api/tours" style={{ textDecoration: 'none' }}>
                   <div style={{ textAlign: "center" }}  className="navtext">
                     <img
                       src="/img/catalog.png"

@@ -1,7 +1,11 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
+import Navibar from "./components/navibar";
+
 
 export const Tours = () => (
+  <>
+  <Navibar />
   <Container style={{ paddingTop: '2rem', paddingBottom: '2rem', justifyContent: "center", alignItems: "center"}}>
     <Container>
 
@@ -67,4 +71,5 @@ export const Tours = () => (
       </Col>
     </Row>
   </Container>
+  </>
 );

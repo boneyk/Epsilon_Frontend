@@ -1,11 +1,13 @@
 import React from "react";
 import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Header from "./components/Header";
 
 export const Login = () => (
   <div>
-    <Container>
-      <Row className="vh-100 d-flex justify-content-center align-items-center">
+    <Header/>
+    <Container style={{paddingTop:'1rem', paddingBottom:'1rem'}}>
+      <Row className=" d-flex justify-content-center align-items-center">
         <Col md={8} lg={6} xs={12}>
           <Card className="shadow px-4" style={{ backgroundColor: "#DDDFEB", borderColor: "#DDDFEB" }}>
             <Card.Body>
@@ -29,14 +31,14 @@ export const Login = () => (
                     <div className="d-grid mb-3">
                       
                         <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C" }}>
-                        <Link to="api">Вход</Link>
+                        <Link to="api/tours" style={{ textDecoration: 'none',color: "white" }}>Вход</Link>
                         </Button>
                       
                     </div>
 
                     <div className="d-grid mb-3">
                         <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C" }}>
-                        <Link to="api/reg">Регистрация</Link>
+                        <Link to="api/reg" style={{ textDecoration: 'none',color: "white" }}>Регистрация</Link>
                         </Button>
                     
                     </div>

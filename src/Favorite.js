@@ -1,8 +1,12 @@
 import React from "react";
 import "./fave.css"
 import { Container, Row, Col, Card,ListGroup } from "react-bootstrap";
+import Navibar from "./components/navibar";
+
 
 export const Favorite = () => (
+  <>
+  <Navibar />
     <Container md ='4'style={{ paddingLeft:'5rem',paddingRight:'5rem',paddingTop: '2rem', paddingBottom: '2rem', justifyContent: "center", alignItems: "center" }}>
     <ListGroup>
       <ListGroup.Item className="fave_elem">Cras justo odio</ListGroup.Item>
@@ -12,6 +16,7 @@ export const Favorite = () => (
       <ListGroup.Item className="fave_elem">Vestibulum at eros</ListGroup.Item>
     </ListGroup>
     </Container>
+    </>
 //   <Container md ='4'style={{ paddingLeft:'5rem',paddingRight:'5rem',paddingTop: '2rem', paddingBottom: '2rem', justifyContent: "center", alignItems: "center" }}>
 //     <h3 style={{paddingBottom: '1rem', justifyContent: "center", alignItems: "center", fontSize: "20px"}}>Главная • Избранное</h3>
 //     <Row className="fave_elem" >

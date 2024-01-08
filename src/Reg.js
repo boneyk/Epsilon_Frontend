@@ -1,11 +1,13 @@
 import React from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Header from "./components/Header";
 
 export const Reg = () => (
     <div>
-      <Container>
-        <Row className="vh-100 d-flex justify-content-center align-items-center">
+      <Header/>
+      <Container style={{paddingTop:'1rem', paddingBottom:'1rem'}}>
+        <Row className="d-flex justify-content-center align-items-center">
           <Col md={8} lg={6} xs={12}>
             <Card className="shadow px-4" style={{ backgroundColor: "#DDDFEB", borderColor: "#DDDFEB" }}>
               <Card.Body>
@@ -48,15 +50,15 @@ export const Reg = () => (
                       >
                       </Form.Group>
                       <div className="d-grid">
-                        <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C" }}>
-                        <Link to="/">Зарегистрироваться</Link>
+                        <Button variant="primary" type="submit" style={{ backgroundColor: "#3C5A5C", borderColor: "#3C5A5C"}}>
+                        <Link to="/" style={{ textDecoration: 'none',color: "white" }}>Зарегистрироваться</Link>
                         </Button>
                       </div>
                       <div className="d-grid">
                       <p className="mb-0 text-center">
                         Уже есть аккаунт?{" "}
                         <a  className="text-primary fw-bold">
-                        <Link to="/">Войти</Link>
+                        <Link to="/" style={{ textDecoration: 'none' }}>Войти</Link>
                         </a>
                       </p>
                     </div>

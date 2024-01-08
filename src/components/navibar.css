@@ -21,7 +21,6 @@
     transition: transform 0.35s linear;
     &:hover{
         transform: translateY(-5px);
-        text-decoration: underline;
         color: darkgray;
     }
   }
