@@ -23,8 +23,9 @@ export const Tours = () => {
     });
   }, []);
 
-  const handleCardClick = () => {
-    window.location.replace('/api/tour/1');
+  const handleCardClick = (tour) => {
+    localStorage.setItem("tour_id", tour.id);
+    window.location.replace(`/api/tours/${tour.id}`);
   };
 
   return (
@@ -36,7 +37,7 @@ export const Tours = () => {
         <Row style={{justifyContent: "center", alignItems: "center"}}>
           {tours.map((tour, index) => (
             <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-              <Card style={{ width: '18rem',background:'#DDDFEB' }} onClick={handleCardClick}>
+              <Card style={{ width: '18rem',background:'#DDDFEB' }} onClick={() => handleCardClick(tour)}>
                 <Card.Img src={`/img/${tour.images[0].filename}.png`} />
                 <Card.Body>
                   <Card.Title>{tour.name}</Card.Title>

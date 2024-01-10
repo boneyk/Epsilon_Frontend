@@ -7,24 +7,29 @@ export const Profile = () => {
   const [prof, setProf] = useState([]);
   const [login, setLogin] = useState(""); // создаем состояние для хранения значения логина
   const [email, setEmail] = useState("");
-  const [name, setName] = useState(""); // создаем состояние для хранения значения логина
-  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState(""); // создаем состояние для хранения значения логина
 
   const token = localStorage.getItem("token");
   console.log("токен из хранилища:", token);
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
+  const handleLoginChange = (event) => {
+    setLogin(event.target.value);
   };
   
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
   };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const requestData = {
-      "fullname": name,
-      "phone_number": phone
+      "login": login,
+      "email": email,
+      "password": password
     };
     console.log(requestData); // выводим requestData в консоль (для проверки)
     axios
@@ -67,33 +72,25 @@ export const Profile = () => {
   return (
     <>
       <Navibar />
-      <h1 style={{ marginLeft: "2rem", marginTop:'1rem' }}>• Личные данные •</h1>
-      <Container style={{ display: "flex", alignItems: "center" }}>
-      <Row className=" d-flex justify-content-center align-items-center">
-      <Col md={4} lg={6} xs={12}>
-        <img src={`/img/avatar.png`} style={{ width: "350px", height: "350px", marginRight: "20px" }} />
+      <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
+        <Container></Container>
+        <h2 style={{ paddingLeft: '6rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>• Личные данные •</h2>
+      <Row style={{justifyContent: "center", alignItems: "center"}}>
+      <Col xs="auto" className="p-0">
+        <img src={`/img/avatar.png`} style={{ width: "250px", height: "250px", marginRight: "20px",marginBottom:"1rem" }} />
         </Col>
-        <Col md={8} lg={6} xs={12}>
+        <Col  xs="auto" className="p-0" md={8} lg={6} >
         <Card
               className="shadow px-4"
-              style={{ backgroundColor: "#B8CBE9", borderColor: "#B8CBE9", width:"700px", marginBottom: "20px" }}
+              style={{ backgroundColor: "#B8CBE9", borderColor: "#B8CBE9", marginBottom: "20px" }}
             >
-          <Form.Group className="mb-3" controlId="Login">
-            <Form.Label className="text-center">ФИО</Form.Label>
-            <Form.Control
-              type="text"
-              name="name"
-              defaultValue={prof.fullname}
-              onChange={handleNameChange}
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="Login">
             <Form.Label className="text-center">Login</Form.Label>
             <Form.Control
               type="text"
               name="login"
-              defaultValue={prof.login}
+              defaultValue={prof.login} 
+              onChange={handleLoginChange}
             />
           </Form.Group>
 
@@ -103,16 +100,17 @@ export const Profile = () => {
               type="email"
               name="email"
               defaultValue={prof.email}
+              onChange={handleEmailChange} 
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="Login">
-            <Form.Label className="text-center">Номер телефона</Form.Label>
+          <Form.Group className="mb-3" controlId="Password">
+            <Form.Label className="text-center">Пароль</Form.Label>
             <Form.Control
               type="text"
-              name="login"
-              defaultValue={prof.phone_number}
-              onChange={handlePhoneChange}
+              name="password"
+              placeholder="Измените пароль"
+              onChange={handlePasswordChange}
             />
           </Form.Group>
           <div className="mb-2">

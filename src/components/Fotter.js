@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Row } from "react-bootstrap";
 
 const Footer = () => (
+  <>
   <Container style={{ borderTop: '1px solid black' }} >
     <Row xs="auto" className="justify-content-center mt-4" style={{ paddingBottom: '1rem' }}>
       <h1 style={{ fontSize: '18px', background: "#E9DDDD" }} className="text-center">
@@ -34,6 +35,7 @@ const Footer = () => (
       </Container>
     </Row>
   </Container>
+  </>
 );
 
 export default Footer;

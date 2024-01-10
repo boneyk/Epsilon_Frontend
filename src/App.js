@@ -11,32 +11,9 @@ import { Login } from "./Login"
 import { Notfound } from "./NotFound"
 import { Reg } from "./Reg"
 import Fotter from "./components/Fotter"
-import axios from "axios";
-
-const requestData = {
-  // данные для аутентификации
-  "login":"123",
-  "password":"123"
-};
 
 function App() {
-  // fetch('https://jsonplaceholder.typicode.com/todos/1')
-  //     .then(response => response.json())
-  //     .then(json => console.log(json))
-//   axios.post("/api/auth", requestData, {
-//   headers: {
-//     "Access-Control-Allow-Origin": "*",
-//     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-//   }
-// })
-// .then(response => {
-//   // Обработка успешного ответа
-//   console.log("Ответ сервера:", response.data);
-// })
-// .catch(error => {
-//   // Обработка ошибки
-//   console.error("Ошибка запроса:", error);
-// });
+  const tour_id = localStorage.getItem("tour_id");
   return (
     <>
       <Router>
@@ -44,7 +21,12 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="*" element={<Notfound />} />
       <Route path="api/reg" element={<Reg />} />
-      <Route path="api/tours/1" element={<TourLending />} />
+      <Route path= "/api/tours/1" element={<TourLending />} />
+      <Route path= "/api/tours/2" element={<TourLending />} />
+      <Route path= "/api/tours/3" element={<TourLending />} />
+      <Route path= "/api/tours/4" element={<TourLending />} />
+      <Route path= "/api/tours/5" element={<TourLending />} />
+      <Route path= "/api/tours/6" element={<TourLending />} />
       <Route path="api/tours/favorite" element={<Favorite/>} />
       <Route path="api/users/info" element={<Profile/>} />
       <Route path="api/tours" element={<Tours />} />

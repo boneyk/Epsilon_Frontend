@@ -8,7 +8,7 @@ export const Notfound = () => (
   <Container>
     <Row className="d-flex justify-content-center align-items-center">
       <h1 className="text-center" style={{ paddingTop: "2rem", paddingBottom:'1rem'}}>
-        К сожалению, такой странички не сущестует.<br /> Возвращайтесь на главную по этой кнопке и больше не теряйтесь!
+        К сожалению, такой странички не сущестует.<br /> Возвращайтесь на главную и больше не теряйтесь!
       </h1>
     </Row>
     <Row className="d-flex justify-content-center align-items-center" style={{paddingBottom:'1rem'}}>
