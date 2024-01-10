@@ -5,6 +5,7 @@ import Navibar from "./components/navibar";
 import { Favorite } from "./Favorite";
 import { Profile } from "./Profile";
 import { Tours } from "./Tours";
+import { TourLending } from "./TourLending";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Login } from "./Login"
 import { Notfound } from "./NotFound"
@@ -43,6 +44,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="*" element={<Notfound />} />
       <Route path="api/reg" element={<Reg />} />
+      <Route path="api/tours/1" element={<TourLending />} />
       <Route path="api/tours/favorite" element={<Favorite/>} />
       <Route path="api/users/info" element={<Profile/>} />
       <Route path="api/tours" element={<Tours />} />

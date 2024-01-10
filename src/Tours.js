@@ -23,6 +23,10 @@ export const Tours = () => {
     });
   }, []);
 
+  const handleCardClick = () => {
+    window.location.replace('/api/tour/1');
+  };
+
   return (
     <>
       <Navibar />
@@ -32,7 +36,7 @@ export const Tours = () => {
         <Row style={{justifyContent: "center", alignItems: "center"}}>
           {tours.map((tour, index) => (
             <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-              <Card style={{ width: '18rem' }}>
+              <Card style={{ width: '18rem',background:'#DDDFEB' }} onClick={handleCardClick}>
                 <Card.Img src={`/img/${tour.images[0].filename}.png`} />
                 <Card.Body>
                   <Card.Title>{tour.name}</Card.Title>

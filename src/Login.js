@@ -15,7 +15,6 @@ const [formValid, setFormValid] = useState(false);
 const [success, setSuccess] = useState(false);
 const [successError, setSuccessError] = useState("Неправильно введен логин или пароль");
 
-
 useEffect(() => {
   if (!loginDirty && !passwordDirty && !success) {
     setFormValid(true);
@@ -69,8 +68,12 @@ const blurHandler = (e) => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
-        if (response.status === 200) 
+        if (response.status === 200){ 
           window.location.href = '/api/tours';
+          localStorage.setItem("token", response.data.token);
+          const token = localStorage.getItem("token");
+          console.log("токен из хранилища:", token);
+        }
       })
       .catch((error) => {
         // Обработка ошибки
