@@ -17,7 +17,7 @@ const [successError, setSuccessError] = useState("Неправильно вве�
 
 
 useEffect(() => {
-  if (!loginDirty && !passwordDirty) {
+  if (!loginDirty && !passwordDirty && !success) {
     setFormValid(true);
   } else {
     setFormValid(false);
@@ -69,7 +69,8 @@ const blurHandler = (e) => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
-        setSuccess(false);
+        if (response.status === 200) 
+          window.location.href = '/api/tours';
       })
       .catch((error) => {
         // Обработка ошибки
@@ -144,7 +145,7 @@ const blurHandler = (e) => {
                               textDecoration: "none",color: "white",
                             }}
                             onAbort={!success}
-                            to="api/tours"
+                            // to="api/tours"
                           >
                             Вход
                           </Link>

@@ -1,9 +1,27 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import Navibar from "./components/navibar";
+import axios from "axios";
 
 
-export const Tours = () => (
+
+export const Tours = () => {
+  axios
+      .get("/api/tours", {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      })
+      .then((response) => {
+        // Обработка успешного ответа
+        console.log("Ответ сервера:", response.data);
+      })
+      .catch((error) => {
+        // Обработка ошибки
+        console.error("Ошибка запроса:", error);
+      });
+  return (
   <>
   <Navibar />
   <Container style={{ paddingTop: '2rem', paddingBottom: '2rem', justifyContent: "center", alignItems: "center"}}>
@@ -73,3 +91,4 @@ export const Tours = () => (
   </Container>
   </>
 );
+};
