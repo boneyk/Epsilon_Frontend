@@ -27,16 +27,22 @@ export const Favorite = () => {
     });
   }, []); // Добавляем tokenString в зависимости useEffect
 
+  const handleCardClick = (tour) => {
+    localStorage.setItem("tour_id", tour.id);
+    window.location.replace(`/api/tours/${tour.id}`);
+  };
+
   return (
     <>
     <Navibar />
     <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
       <Container></Container>
       <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Главная • Избранное</h2>
+      {(fave === null) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в избранном нет туров</div>}
       <Row style={{justifyContent: "center", alignItems: "center"}}>
         {fave.map((fave, index) => (
           <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-            <Card style={{ width: '18rem',background:'#DDDFEB' }}>
+            <Card style={{ width: '18rem',background:'#DDDFEB' }} onClick={() => handleCardClick(fave)}>
               <Card.Img src={`/img/${fave.images[0].filename}.png`} />
               <Card.Body>
                 <Card.Title>{fave.country}</Card.Title>

@@ -22,15 +22,47 @@ export const Profile = () => {
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
+    
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if(login === ""){
+      setLogin(prof.login);
+    }else if(email === ""){
+      setEmail(prof.email)
+    }else if(password === ""){
+      const requestData = {
+        "login": login,
+        "email": email,
+      };
+      
+      console.log(requestData); // выводим requestData в консоль (для проверки)
+      axios
+        .patch(`/api/users/info?token=${token}`, requestData, {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          },
+        })
+        .then((response) => {
+          // Обработка успешного ответа
+          console.log("Ответ сервера:", response.data);
+          <Toast>
+            <Toast.Body>Информация успешно обновлена</Toast.Body>
+          </Toast>
+        })
+        .catch((error) => {
+          // Обработка ошибки
+          console.error("Ошибка запроса:", error);
+        });
+    }else{
     const requestData = {
       "login": login,
       "email": email,
-      "password": password
+      "password":password
     };
+    
     console.log(requestData); // выводим requestData в консоль (для проверки)
     axios
       .patch(`/api/users/info?token=${token}`, requestData, {
@@ -50,6 +82,7 @@ export const Profile = () => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
       });
+    }
   };
 
   useEffect(() => {
