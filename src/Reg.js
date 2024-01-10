@@ -95,6 +95,9 @@ export const Reg = () => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
+        if (response.status === 201){
+          window.location.href = '/';
+        }
         setSuccess(false);
       })
       .catch((error) => {
