@@ -13,8 +13,11 @@ export const TourLending = () => {
     const token = localStorage.getItem("token");
     console.log("tour_id из хранилища:", tour_id);
     console.log("токен из хранилища:", token);
-    const [show, setShow] = useState(false);
-  const [target, setTarget] = useState(null);
+    
+    const [show1, setShow1] = useState(false);
+  const [show2, setShow2] = useState(false);
+  const [target1, setTarget1] = useState(null);
+  const [target2, setTarget2] = useState(null);
   const ref = useRef(null);
     
 
@@ -49,8 +52,6 @@ export const TourLending = () => {
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
-            setShow(!show);
-            setTarget(event.target);
           })
           .catch((error) => {
             // Обработка ошибки
@@ -70,8 +71,6 @@ export const TourLending = () => {
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
-            // setShow(!show);
-            // setTarget(event.target);
           })
           .catch((error) => {
             // Обработка ошибки
@@ -82,50 +81,28 @@ export const TourLending = () => {
     return (
         <div>
             <Header />
+            {/* <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid className="d-flex justify-content-center align-items-center"/> */}
             <Container className="d-flex justify-content-center align-items-center">
                 <Row>
                     <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
+                    <Card>
                     <Container>
                         <div className="mb-2" style={{ marginTop: "3rem" }}>
                             <div ref={ref} className="d-flex justify-content-between align-items-center">
                                 <Button variant="secondary" onClick={handleAdd} >
                                     Добавить в избранное
                                 </Button>
-                                <Overlay
-                                    show={show}
-                                    target={target}
-                                    placement="bottom"
-                                    container={ref}
-                                    containerPadding={20}
-                                >
-                                    <Popover id="popover-contained">
-                                    <Popover.Body>
-                                        <strong>Тур успешно добавлен в изрбанное</strong> 
-                                    </Popover.Body>
-                                    </Popover>
-                                </Overlay>
 
                                 <h1 className="text-center" style={{ fontSize: "38px", marginTop: "3rem",marginBottom:"2rem" }}>• Описание тура •</h1>
 
                                 <Button variant="secondary" onClick={handleDel}>
                                     Удалить из избранного
                                 </Button>
-                                {/* <Overlay
-                                    show={show}
-                                    target={target}
-                                    placement="bottom"
-                                    container={ref}
-                                    containerPadding={20}
-                                >
-                                    <Popover id="popover-contained">
-                                    <Popover.Body>
-                                        <strong>Тур успешно удален избанного</strong> 
-                                    </Popover.Body>
-                                    </Popover>
-                                </Overlay> */}
+                                
                             </div>
                         </div>
                     </Container>
+                    </Card>
                     <Row style={{ justifyContent: "center", alignItems: "center",marginBottom:"2rem" }}>
                         <Col xs="auto" className="" md={8} lg={4}>
                             <Card

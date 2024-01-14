@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Form,Col,Card,Button,Toast } from "react-bootstrap";
 import axios from "axios";
 import Navibar from "./components/navibar";
+import { Link } from "react-router-dom";
+
 
 export const Profile = () => {
   const [prof, setProf] = useState([]);
@@ -156,6 +158,75 @@ export const Profile = () => {
       </div>
         </Card>
         </Col>
+        </Row>
+        <Row className=" d-flex justify-content-center align-items-center">
+        <Col xs="auto" className="p-0" md={8} lg={6}>
+          <Card className="shadow px-4">
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "black",
+              display: "flex", // Добавляем flex-свойство
+              alignItems: "center", // Выравниваем элементы по центру
+              justifyContent: "space-between", // Распределяем элементы равномерно по контейнеру
+              marginTop: "10px",
+              marginBottom: "10px"
+            }}
+            // to="api/tours"
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src="/img/busket_ico.png"
+                width="50"
+                height="40"
+                alt="Basket icon"
+              />
+              <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>История покупок</h1>
+            </div>
+            <img
+              src="/img/path_to.png"
+              width="50"
+              height="40"
+              alt="Basket icon"
+            />
+          </Link>
+          </Card>
+        </Col>
+        </Row>
+        <Row className=" d-flex justify-content-center align-items-center" style={{marginTop: "1rem" }}>
+          <Col xs="auto" className="p-0" md={8} lg={6}>
+          <Card className="shadow px-4">
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "black",
+              display: "flex", // Добавляем flex-свойство
+              alignItems: "center", // Выравниваем элементы по центру
+              justifyContent: "space-between", // Распределяем элементы равномерно по контейнеру
+              marginTop: "10px",
+              marginBottom: "10px"
+            }}
+            // to="api/tours"
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                src="/img/docks_ico.png"
+                width="50"
+                height="40"
+                alt="Basket icon"
+              />
+              <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>Документы</h1>
+            </div>
+            <img
+              src="/img/path_to.png"
+              width="50"
+              height="40"
+              alt="Basket icon"
+            />
+          </Link>
+
+          </Card>
+          </Col>
         </Row>
       </Container>
     </>
