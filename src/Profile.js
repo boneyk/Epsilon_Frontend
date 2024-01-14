@@ -104,6 +104,13 @@ export const Profile = () => {
       });
   }, []);
 
+  const handleHistClick = () => {
+    window.location.replace(`/api/tours/history?token=${token}`);
+  };
+  const handleDocksClick = () => {
+    window.location.replace(`/api/documents?token=${token}`);
+  };
+
   return (
     <>
       <Navibar />
@@ -172,6 +179,7 @@ export const Profile = () => {
               marginTop: "10px",
               marginBottom: "10px"
             }}
+            onClick={() => handleHistClick()}
             // to="api/tours"
           >
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -206,6 +214,7 @@ export const Profile = () => {
               marginTop: "10px",
               marginBottom: "10px"
             }}
+            onClick={() => handleDocksClick()}
             // to="api/tours"
           >
             <div style={{ display: "flex", alignItems: "center" }}>

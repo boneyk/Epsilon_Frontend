@@ -10,6 +10,8 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Login } from "./Login"
 import { Notfound } from "./NotFound"
 import { Reg } from "./Reg"
+import { Busket } from "./Busket"
+import { Docs } from "./Docs"
 import Fotter from "./components/Fotter"
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
       <Route path= "/api/tours/5" element={<TourLending />} />
       <Route path= "/api/tours/6" element={<TourLending />} />
       <Route path="api/tours/favorite" element={<Favorite/>} />
+      <Route path="api/tours/history" element={<Busket/>} />
+      <Route path="api/documents" element={<Docs/>} />
       <Route path="api/users/info" element={<Profile/>} />
       <Route path="api/tours" element={<Tours />} />
       </Routes>

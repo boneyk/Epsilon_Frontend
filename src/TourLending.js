@@ -59,10 +59,10 @@ export const TourLending = () => {
           });
       };
 
-      const handleDel = (event) => {
+      const handleBuy = (event) => {
         event.preventDefault();
         axios
-          .delete(`/api/tours/favorite/${tour_id}/from/${token}`, {
+          .patch(`/api/tours/history/${tour_id}/to/${token}`,{
             headers: {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -85,24 +85,12 @@ export const TourLending = () => {
             <Container className="d-flex justify-content-center align-items-center">
                 <Row>
                     <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
-                    <Card>
-                    <Container>
-                        <div className="mb-2" style={{ marginTop: "3rem" }}>
-                            <div ref={ref} className="d-flex justify-content-between align-items-center">
-                                <Button variant="secondary" onClick={handleAdd} >
-                                    Добавить в избранное
-                                </Button>
-
-                                <h1 className="text-center" style={{ fontSize: "38px", marginTop: "3rem",marginBottom:"2rem" }}>• Описание тура •</h1>
-
-                                <Button variant="secondary" onClick={handleDel}>
-                                    Удалить из избранного
-                                </Button>
-                                
-                            </div>
+                        <div className="d-flex justify-content-center align-items-center" style={{ marginTop:'1rem', marginBottom:'1rem' }}>
+                            <h1 style={{ fontSize: "38px", margin: "0" }}>• Описание тура •</h1>
                         </div>
-                    </Container>
-                    </Card>
+                        <Button variant="secondary" onClick={handleAdd}>
+                            Добавить в избранное
+                        </Button>
                     <Row style={{ justifyContent: "center", alignItems: "center",marginBottom:"2rem" }}>
                         <Col xs="auto" className="" md={8} lg={4}>
                             <Card
@@ -135,7 +123,9 @@ export const TourLending = () => {
                             <h1 className="text-center" style={{ fontSize: "45px", marginTop: "3rem",marginBottom:"2rem" }}>Цена за тур:<br/>{tourinfo.tour?.price_per_one} ₽</h1>
                             </Col>
                         <Col>
-                            <Button variant="secondary" className="text-center" style={{fontSize: "45px",background:"#8BB2BB",width:"300px", height: "100px", borderColor:"#8BB2BB", color: "black"}}>Купить тур</Button>
+                            <Button variant="secondary" className="text-center" style={{fontSize: "45px",background:"#8BB2BB",width:"300px", height: "100px", borderColor:"#8BB2BB", color: "black"}} onClick={handleBuy}>
+                                Купить тур
+                            </Button>
                         </Col>
                             </div>
                         </Col>
