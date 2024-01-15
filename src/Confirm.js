@@ -1,0 +1,155 @@
+import React, { useState, useEffect } from "react";
+import { Container, Row, Form,Col,Card,Button,Toast } from "react-bootstrap";
+import axios from "axios";
+import Navibar from "./components/navibar";
+import { Link } from "react-router-dom";
+
+
+export const Confirm = () => {
+    const info = JSON.parse(localStorage.getItem("conf_info"));
+console.log("Запрос:", info);
+const [confinfo, setInfo] = useState([]);
+
+useEffect(() => {
+  axios
+    .post("/api/trip",info,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }).then((response) => {
+      console.log("Ответ сервера:", response.data);
+      setInfo(response.data);
+    })
+    .catch((error) => {
+      console.error("Ошибка запроса:", error);
+    });
+}, []);
+
+const handleBuy = (event) => {
+  event.preventDefault();
+  axios
+    .post("/api/trip/add",info,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    })
+    .then((response) => {
+      // Обработка успешного ответа
+      console.log("Ответ сервера:", response.data);
+    })
+    .catch((error) => {
+      // Обработка ошибки
+      console.error("Ошибка запроса:", error);
+    });
+};
+    
+
+  return (
+    <>
+      <Navibar />
+      <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
+        <Container></Container>
+        <h2 style={{ paddingLeft: '3rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Подтверждение заказа</h2>
+      <Row style={{justifyContent: "center", alignItems: "center"}}>
+      <Col xs="auto" md={8} lg={4}>
+      <Card
+              className="shadow px-4"
+              style={{ backgroundColor: "#DDDFEB", borderColor: "#DDDFEB", marginBottom: "20px" }}
+            >
+        <h2 style={{borderBottom:'1px solid black'}}>Список туристов:</h2>
+        <Card.Body>
+        {confinfo.person_list?.map((confinfo, index) => (
+        <Link
+              style={{
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: "10px",
+                marginBottom: "10px",
+              }}>
+            <Card.Text className="text-center" style={{background:"#F3F6FB",borderRadius: "10px"}}>
+                {confinfo.fullname}
+                <img
+                  src="/img/path_to.png"
+                  width="50"
+                  height="40"
+                  alt="Basket icon"
+                />
+            </Card.Text>
+            </Link>
+        ))} 
+        </Card.Body>
+        </Card>
+        </Col>
+
+
+        <Col xs="auto" className="p-0" md={8} lg={6}>
+        <Card
+            className="shadow px-4"
+            style={{ backgroundColor: "#DDDFEB", borderColor: "#DDDFEB", marginBottom: "20px" }}
+        >
+            <h2 style={{ borderBottom: "1px solid black" }}>Информация о туре</h2>
+            <Card.Body>
+                <div>
+                <h5>Страна:</h5>
+                <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
+                    {confinfo.tour?.country}
+                </Card.Text>
+                <h5>Город:</h5>
+                <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
+                    {confinfo.tour?.city}
+                </Card.Text>
+                <Col></Col>
+                <h5>Дата начала:</h5>
+                <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
+                    {confinfo.date?.dateStart}
+                </Card.Text>
+                <h5>Дата конца:</h5>
+                <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
+                  {confinfo.date?.dateEnd}
+                </Card.Text>
+                <h5>Цена:</h5>
+                <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
+                    {confinfo.tour?.price_per_one}  ₽
+                </Card.Text>
+                <h5>Описание тура:</h5>
+                <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
+                    {confinfo.tour?.description}
+                </Card.Text>
+                </div>
+            </Card.Body>
+        </Card>
+        </Col>
+        </Row>
+
+
+        <Row style={{ marginLeft: '1rem' }} className="justify-content-center">
+        <Button
+            variant="secondary"
+            className="text-center"
+            style={{
+            fontSize: "30px",
+            background: "#8BB2BB",
+            width: "250px",
+            height: "100px",
+            borderColor: "#8BB2BB",
+            color: "black",
+            marginTop: '1rem'
+            }}
+        onClick={handleBuy}
+        >
+            Подтвердить
+        </Button>
+        </Row>
+        <Row className="justify-content-center">
+        <h1>Спасибо за покупку!</h1>
+        </Row>
+
+      </Container>
+    </>
+  );
+};

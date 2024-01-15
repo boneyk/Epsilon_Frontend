@@ -44,6 +44,7 @@ export const Docs = () => {
       });
   };
   const handleToClick = (tour) => {
+    localStorage.setItem("doc_token",tour.token)
     window.location.replace(`/api/documents/person?doc_token=${tour.token}`);
   };
   const handleAddClick = (tour) => {

@@ -12,7 +12,9 @@ import { Notfound } from "./NotFound"
 import { Reg } from "./Reg"
 import { Busket } from "./Busket"
 import { Docs } from "./Docs"
+import { Confirm } from "./Confirm"
 import Fotter from "./components/Fotter"
+import { PersDock } from "./PersDock";
 
 function App() {
   const tour_id = localStorage.getItem("tour_id");
@@ -32,7 +34,9 @@ function App() {
       <Route path="api/tours/favorite" element={<Favorite/>} />
       <Route path="api/tours/history" element={<Busket/>} />
       <Route path="api/documents" element={<Docs/>} />
+      <Route path="api/documents/person" element={<PersDock/>} />
       <Route path="api/users/info" element={<Profile/>} />
+      <Route path="/api/trip" element={<Confirm/>} />
       <Route path="api/tours" element={<Tours />} />
       </Routes>
       </Router>

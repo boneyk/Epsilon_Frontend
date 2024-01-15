@@ -24,8 +24,16 @@ export const Busket = () => {
   }, [token]); // Добавляем token в зависимости useEffect
 
   const handleCardClick = (tour) => {
-    localStorage.setItem("tour_id", tour.id);
-    window.location.replace(`/api/tours/${tour.id}`);
+    const requestData = {
+      "date_id": tour.bookingEntity?.date.id,
+      "tour_id": tour.bookingEntity?.tour.id,
+      "token": token,
+      "person_list": tour.participants
+    };
+    // Преобразование в строку и сохранение в localStorage
+      localStorage.setItem("conf_info", JSON.stringify(requestData));
+      console.log("Запрос:", localStorage.getItem("conf_info"));
+      window.location.replace(`/api/trip`);  
   };
 
   return (
