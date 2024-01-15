@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
-export const Confirm = () => {
+export const SeeConf = () => {
     const info = JSON.parse(localStorage.getItem("conf_info"));
 console.log("Запрос:", info);
 const [confinfo, setInfo] = useState([]);
@@ -29,27 +29,6 @@ useEffect(() => {
     });
 }, []);
 
-const handleBuy = (event) => {
-  event.preventDefault();
-  toast("Спасибо за покупку!", { autoClose: 5000 });
-  axios
-    .post("/api/trip/add",info,{
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-      },
-    })
-    .then((response) => {
-      // Обработка успешного ответа
-      console.log("Ответ сервера:", response.data);
-    })
-    .catch((error) => {
-      // Обработка ошибки
-      console.error("Ошибка запроса:", error);
-    });
-};
-    
-
   return (
     <>
       <Navibar />
@@ -65,7 +44,6 @@ const handleBuy = (event) => {
         <h2 style={{borderBottom:'1px solid black'}}>Список туристов:</h2>
         <Card.Body>
         {confinfo.person_list?.map((confinfo, index) => (
-          <div> 
         <Link
               style={{
                 textDecoration: "none",
@@ -86,7 +64,6 @@ const handleBuy = (event) => {
                 />
             </Card.Text>
             </Link>
-            </div>
         ))} 
         </Card.Body>
         </Card>
@@ -130,27 +107,6 @@ const handleBuy = (event) => {
             </Card.Body>
         </Card>
         </Col>
-        </Row>
-
-
-        <Row style={{ marginLeft: '1rem' }} className="justify-content-center">
-        <Button
-            variant="secondary"
-            className="text-center"
-            style={{
-            fontSize: "30px",
-            background: "#8BB2BB",
-            width: "250px",
-            height: "100px",
-            borderColor: "#8BB2BB",
-            color: "black",
-            marginTop: '1rem'
-            }}
-        onClick={handleBuy}
-        >
-            Подтвердить
-        </Button>
-        <ToastContainer />
         </Row>
 
       </Container>

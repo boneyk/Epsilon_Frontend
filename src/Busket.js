@@ -33,7 +33,7 @@ export const Busket = () => {
     // Преобразование в строку и сохранение в localStorage
       localStorage.setItem("conf_info", JSON.stringify(requestData));
       console.log("Запрос:", localStorage.getItem("conf_info"));
-      window.location.replace(`/api/trip`);  
+      window.location.replace(`/api/trip/conf`);  
   };
 
   return (
@@ -50,7 +50,7 @@ export const Busket = () => {
               <Card.Img src={`/img/${hist.bookingEntity.tour.images[0].filename}.png`} onClick={() => handleCardClick(hist)} />
               <Card.Body onClick={() => handleCardClick(hist)}>
                 <Card.Title>{hist.bookingEntity.tour.country},{hist.bookingEntity.tour.city}</Card.Title>
-                <Card.Text>{hist.bookingEntity.tour.price_per_one} ₽</Card.Text>
+                <Card.Text>{hist.bookingEntity.tour.price_per_one * hist.people_amount} ₽</Card.Text>
               </Card.Body>
               <Card.Footer >
                 <Card.Text>{hist.status}</Card.Text>

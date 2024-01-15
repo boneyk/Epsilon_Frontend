@@ -89,7 +89,7 @@ export const Docs = () => {
       {(docs.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туристов</div>}
         {docs.map((docs, index) => (
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
-        <Col xs="auto" style={{ paddingBottom: '1rem' }} key={index}>
+        <Col xs="auto" style={{ paddingBottom: '1rem' }} key={index} md={8} lg={6}>
           <Card className="shadow px-4">
             <Link
               style={{
@@ -110,13 +110,14 @@ export const Docs = () => {
                   {docs.fullname}
                 </h1>
               </div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
               <Link
                 style={{
                   textDecoration: "none",
                   color: "black",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent: "end",
                   marginTop: "10px",
                   marginBottom: "10px"
                 }}
@@ -135,7 +136,7 @@ export const Docs = () => {
                   color: "black",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent: "end",
                   marginTop: "10px",
                   marginBottom: "10px"
                 }}
@@ -148,6 +149,7 @@ export const Docs = () => {
                   alt="Basket icon"
                 />
               </Link>
+              </div>
             </Link>
           </Card>
         </Col>

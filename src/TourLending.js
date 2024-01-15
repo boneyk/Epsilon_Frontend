@@ -6,6 +6,8 @@ import axios from "axios";
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 export const TourLending = () => {
@@ -15,7 +17,9 @@ export const TourLending = () => {
     console.log("tour_id из хранилища:", tour_id);
     console.log("токен из хранилища:", token);
     const [selectedPers, setSelectedPers] = useState([]);
-
+    const [showNotification, setShowNotification] = useState(false);
+    const timerRef = useRef(null);
+  
     
     const [show1, setShow1] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -45,6 +49,7 @@ export const TourLending = () => {
 
     const handleAdd = (event) => {
         event.preventDefault();
+        
         axios
           .patch(`/api/tours/favorite/${tour_id}/to/${token}`,{
             headers: {
@@ -55,6 +60,12 @@ export const TourLending = () => {
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
+            toast.success("Тур успешно добавлен в избранное", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeButton: false
+              });
           })
           .catch((error) => {
             // Обработка ошибки
@@ -73,21 +84,35 @@ export const TourLending = () => {
             "person_list": selectedPersons
           };
           // Преобразование в строку и сохранение в localStorage
-        if(selectedDate !== null || selectedPersons !== null){
+        if(selectedDate !== null && selectedPersons !== null){
             localStorage.setItem("conf_info", JSON.stringify(requestData));
             console.log("Запрос:", localStorage.getItem("conf_info"));
             window.location.replace(`/api/trip`);
+        }else{
+            toast("Выберите туристов и дату", { autoClose: 4000 });
         }
       };
         
       const [selectedDate, setSelectedDate] = useState(null);
+      const [prevDate, setPrevDate] = useState(null);
 
       const handleDateChange = (e, token) => {
         const selDate = e.target.id;
-        // Записываем выбранное значение в переменную или состояние
-        setSelectedDate(selDate);
-        console.log("Ответ date:", e.target.id);
+        if (selDate !== prevDate) {
+          // Записываем выбранное значение в переменную или состояние
+          setSelectedDate(selDate);
+          setPrevDate(selDate);
+          console.log("Ответ date:", e.target.id);
+        } else {
+          // Если выбранное значение совпадает с предыдущим, устанавливаем selectedDate в null
+          setSelectedDate(null);
+          setPrevDate(null);
+        }
       };
+      
+      
+
+      
     
 
       const [selectedPersons, setSelectedPersons] = useState([]);
@@ -117,7 +142,7 @@ export const TourLending = () => {
             <Container className="d-flex justify-content-center align-items-center">
                 <Row>
                     <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
-                        <Link
+                    <Link
                             onClick={handleAdd}
                             style={{
                                 textDecoration: "none",
@@ -127,15 +152,24 @@ export const TourLending = () => {
                                 justifyContent: "flex-end", // Добавляем свойство для выравнивания по правому краю
                                 marginTop:'1rem'
                             }}
-                            >
-                            <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить в избранное</h1> {/* Заменяем marginLeft на marginRight */}
+                            ref={ref}
+                        >
+                            <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить в избранное</h1> 
                             <img
                                 src="/img/edit_ico.png"
                                 width="20"
                                 height="30"
                                 alt="Иконка редактирования"
                             />
-                            </Link>
+                        </Link>
+                        <ToastContainer />
+
+                        {showNotification && (
+                            <div style={{ marginTop: "1rem" }}>
+                            Тур успешно добавлен в избранное
+                            </div>
+                        )}
+
                         <div className="d-flex justify-content-center align-items-center" style={{ marginTop:'1rem', marginBottom:'1rem' }}>
                             <h1 style={{ fontSize: "38px", margin: "0" }}>• Описание тура •</h1>
                         </div>
@@ -177,6 +211,9 @@ export const TourLending = () => {
                             }}
                         >
                             • Туристы •
+                            {(tourinfo.persons?.length === 0) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
+                                Для покупки тура Вам необходимо добавить туристов в личном кабинете
+                            </h1>}
                             {tourinfo.persons?.map((type) => (
                             <Form
                                 key={type.token}
@@ -261,6 +298,7 @@ export const TourLending = () => {
                              >
                                 Купить тур
                             </Button>
+                            <ToastContainer />
                         </Col>
                             </div>
                         </Col>
