@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'react-bootstrap/Modal';
 
 
 export const PersDock = () => {
@@ -13,6 +14,11 @@ export const PersDock = () => {
     const [name, setName] = useState(""); // создаем состояние для хранения значения логина
     const [phone, setPhone] = useState("");
     const doc_token = localStorage.getItem("doc_token");
+
+    const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
     const handleNameChange = (event) => {
         setName(event.target.value);
@@ -123,6 +129,7 @@ export const PersDock = () => {
                     alignItems: "center",
                     justifyContent: "flex-end", // Добавляем свойство для выравнивания по правому краю
                 }}
+                onClick={handleShow}
                 >
                 <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить <br/>документ</h1> {/* Заменяем marginLeft на marginRight */}
                 <img
@@ -137,14 +144,13 @@ export const PersDock = () => {
 
 
             <Row className=" d-flex justify-content-center align-items-center">
-            <Col xs="auto" className="p-0" md={8} lg={8}>
+            <Col xs="auto" className="p-0" md={6} lg={6}>
             <Card
             className="shadow px-4"
             style={{ backgroundColor: "#DDDFEB", borderColor: "#DDDFEB", marginBottom: "20px" }}
         >
             <h2 style={{ borderBottom: "1px solid black" }}>• Паспорт •</h2>
             <Card.Body>
-            {/* {confinfo.map((confinfo, index) => ( */}
             <Form 
             // onSubmit={handleSubmit}
             >
@@ -155,7 +161,7 @@ export const PersDock = () => {
                           type="text"
                           name="login"
                           placeholder="Введите ФИО"
-                        //   value={login}
+                          value={pers.passport?.fullname}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handleLoginChange}
                         />
@@ -170,7 +176,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите пол"
-                        //   value={password}
+                          value={pers.passport?.sex}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -185,7 +191,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите дату рождения"
-                        //   value={password}
+                          value={pers.passport?.date_of_birth}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -200,7 +206,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите гражданство"
-                        //   value={password}
+                          value={pers.passport?.citizenship}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -215,7 +221,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите серию паспорта"
-                        //   value={password}
+                          value={pers.passport?.serial}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -230,7 +236,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите номер паспорта"
-                        //   value={password}
+                          value={pers.passport?.number}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -245,7 +251,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите дату выдачи паспорта"
-                        //   value={password}
+                          value={pers.passport?.date_of_given}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -260,7 +266,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите кем выдан паспорт"
-                        //   value={password}
+                          value={pers.passport?.who_gave}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -275,7 +281,7 @@ export const PersDock = () => {
                           type="text"
                           name = "password"
                           placeholder="Введите регистрацию"
-                        //   value={password}
+                          value={pers.passport?.registration}
                         //   onBlur={e=>blurHandler(e)}
                         //   onChange={handlePasswordChange}
                         />
@@ -296,12 +302,32 @@ export const PersDock = () => {
                         </Button>
                     </div>
                     </Form>
-            {/* ))} */}
             </Card.Body>
             </Card>
             </Col>
             </Row>
         </Container>
+
+        <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Modal title</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          I will not close if you click outside me. Do not even try to press
+          escape key.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary">Understood</Button>
+        </Modal.Footer>
+      </Modal>
         </>
 );
 };
