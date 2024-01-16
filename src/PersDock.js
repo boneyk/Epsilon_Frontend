@@ -4,6 +4,8 @@ import { Container, Row, Col, Card, Button,Form } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const PersDock = () => {
@@ -27,6 +29,8 @@ export const PersDock = () => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
             setPers(response.data);
+            setName(response.data.fullname);
+            setPhone(response.data.phone_number);
           })
           .catch((error) => {
             // Обработка ошибки
@@ -48,6 +52,9 @@ export const PersDock = () => {
     .then((response) => {
       // Обработка успешного ответа
       console.log("Ответ сервера:", response.data);
+      setName(name);
+      setPhone(phone);
+      toast("Информация успешно обновлена", { autoClose: 4000 });
     })
     .catch((error) => {
       // Обработка ошибки
@@ -55,10 +62,17 @@ export const PersDock = () => {
     });
     };
 
+    const handleCancel = () => {
+      // Вернуть исходные значения полей
+      setName(pers.fullname);
+      setPhone(pers.phone_number);
+    };
+
     return (
         <>
         <Navibar />
         <Container>
+        <ToastContainer />
 
             <Row className=" d-flex justify-content-center align-items-center">
             <Col xs="auto" md={8} lg={6}>
@@ -71,7 +85,7 @@ export const PersDock = () => {
                           type="text"
                           name="name"
                           placeholder="Введите ФИО"
-                          value={pers.fullname}
+                          value={name} 
                         //   onBlur={e=>blurHandler(e)}
                           onChange={handleNameChange}
                         />
@@ -82,7 +96,7 @@ export const PersDock = () => {
                           type="text"
                           name="phone"
                           placeholder="Введите номер телефона"
-                          value={pers.phone_number}
+                          value={phone} 
                         //   onBlur={e=>blurHandler(e)}
                           onChange={handlePhoneChange}
                         />
@@ -93,7 +107,7 @@ export const PersDock = () => {
                         >
                         Сохранить
                         </Button>{' '}
-                        <Button variant="secondary">
+                        <Button variant="secondary" onClick={handleCancel} >
                         Отменить
                         </Button>
                     </div>

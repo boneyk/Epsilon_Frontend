@@ -2,10 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Tours = () => {
   const [tours, setTours] = useState([]);
+  const [status, setStatus] = useState(localStorage.getItem("token") !== null);
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
+    console.log("токен:", token);
     axios.get("/api/tours", {
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -21,17 +27,24 @@ export const Tours = () => {
       // Обработка ошибки
       console.error("Ошибка запроса:", error);
     });
-  }, []);
+  }, [token]);
 
   const handleCardClick = (tour) => {
-    localStorage.setItem("tour_id", tour.id);
-    window.location.replace(`/api/tours/${tour.id}`);
+    // (token === null) ? setStatus(false) : setStatus(true);
+    console.log("Статус и токен:", status,);
+    if(status === false){
+      toast("Войдите в личный кабинет, чтобы продолжить", { autoClose: 4000 });
+    }else{
+      localStorage.setItem("tour_id", tour.id);
+      window.location.replace(`/api/tours/${tour.id}`);
+    }
   };
 
   return (
     <>
       <Navibar />
       <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
+      <ToastContainer />
         <Container></Container>
         <h2 style={{ paddingLeft: '6rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Наши туры:</h2>
         <Row style={{justifyContent: "center", alignItems: "center"}}>

@@ -71,10 +71,10 @@ export const TourLending = () => {
             "person_list": selectedPersons
           };
           // Преобразование в строку и сохранение в localStorage
-        if(selectedDate !== null && selectedPersons !== null){
+        if(selectedDate !== null && selectedPersons.length > 0){
             localStorage.setItem("conf_info", JSON.stringify(requestData));
             console.log("Запрос:", localStorage.getItem("conf_info"));
-            window.location.replace(`/api/trip`);
+            // window.location.replace(`/api/trip`);
         }else{
             toast("Выберите туристов и дату", { autoClose: 4000 });
         }
@@ -96,11 +96,20 @@ export const TourLending = () => {
           setPrevDate(null);
         }
       };
+      const handleDateClick = (index) => {
+        const updatedDates = tourinfo.tour.date.map((type, i) => ({
+          ...type,
+          checked: i === index, // Устанавливаем состояние checked для выбранной строчки
+        }));
       
-      
-
-      
-    
+        setTour({
+          ...tourinfo,
+          tour: {
+            ...tourinfo.tour,
+            date: updatedDates,
+          },
+        });
+      };
 
       const [selectedPersons, setSelectedPersons] = useState([]);
 
@@ -141,9 +150,7 @@ export const TourLending = () => {
                             marginTop:'1rem',
                             backgroundColor: 'transparent', // Делаем кнопку прозрачной
                             border: 'none', // Убираем границу у кнопки
-                        }}
-                        ref={ref}
-                    >
+                        }}>
                         <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить в избранное</h1> 
                         <img
                             src="/img/edit_ico.png"
@@ -152,18 +159,7 @@ export const TourLending = () => {
                             alt="Иконка редактирования"
                         />
                     </Button>
-                    {/* <Toast
-                        show={showNotification}
-                        onClose={() => setShowNotification(false)}
-                        style={{
-                            position: 'absolute',
-                            top: 20,
-                            right: 20,
-                            backgroundColor: 'blue', // Цвет фона toast
-                        }}
-                    >
-                        <Toast.Body>Тур успешно добавлен в избранное</Toast.Body>
-                    </Toast> */}
+                    
                         <div className="d-flex justify-content-center align-items-center" style={{ marginTop:'1rem', marginBottom:'1rem' }}>
                             <h1 style={{ fontSize: "38px", margin: "0" }}>• Описание тура •</h1>
                         </div>
@@ -250,23 +246,24 @@ export const TourLending = () => {
                     <div className="mb-2">
                         <div className="d-flex flex-column align-items-center">
                         <h1 className="text-center" style={{ fontSize: "38px", marginTop: "1rem", marginBottom: "2rem" }}>• Даты •
-                            {tourinfo.tour?.date?.map((type) => (
+                            {tourinfo.tour?.date?.map((type, index) => (
                             <Form key={type.dateStart} className="mb-3" style={{ fontSize: "30px", marginTop: "1rem"}}>
                                 <Form.Check
-                                type="checkbox" // Изменяем тип на "radio"
+                                type="radio"
                                 id={type.id}
                                 name="group1"
                                 label={`c ${type.dateStart} по ${type.dateEnd}`}
-                                checked={type.checked} // Добавьте состояние checked
-                                onChange={(e) => handleDateChange(e, type.token)} // Добавьте обработчик изменения состояния для радиокнопок
+                                checked={type.checked}
+                                onChange={(e) => handleDateChange(e, type.token)}
+                                onClick={() => handleDateClick(index)} // Добавляем обработчик клика на строчку
                                 style={{
                                     backgroundColor: "#DDDFEB",
                                     borderColor: "#DDDFEB",
                                     fontSize: "24px",
                                     padding: "10px",
                                     position: "relative",
-                                    paddingLeft: "40px", // Увеличиваем отступ слева для включения фонового поля
-                                    borderRadius: "10px", // Добавляем закругление углов
+                                    paddingLeft: "40px",
+                                    borderRadius: "10px",
                                 }}
                                 />
                             </Form>
@@ -275,6 +272,7 @@ export const TourLending = () => {
                         </div>
                     </div>
                     </Row>
+
 
 
 
@@ -290,7 +288,7 @@ export const TourLending = () => {
                             <Button variant="secondary" className="text-center" style={{fontSize: "45px",background:"#8BB2BB",width:"300px", height: "100px", borderColor:"#8BB2BB", color: "black"}}
                              onClick={handleBuy}
                              >
-                                Купить тур
+                                Заказать тур
                             </Button>
                             {/* <ToastContainer /> */}
                         </Col>

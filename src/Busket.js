@@ -41,7 +41,7 @@ export const Busket = () => {
     <Navibar />
     <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
       <Container></Container>
-      <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Главная • История покупок</h2>
+      <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Главная • Заказы</h2>
       {(hist.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в корзине нет заказов</div>}
       <Row style={{justifyContent: "center", alignItems: "center"}}>
         {hist.map((hist, index) => (

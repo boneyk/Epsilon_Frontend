@@ -4,6 +4,8 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export const Docs = () => {
@@ -53,18 +55,25 @@ export const Docs = () => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
-        setDocs([...docs, response.data]);
+        const newTourist = response.data;
+        newTourist.fullname = null; // Устанавливаем значение fullname в null
+        setDocs([...docs, newTourist]);
       })
       .catch((error) => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
+        if (error.response.status === 400) {
+          toast("Войдите в личный кабинет, чтобы продолжить", { autoClose: 4000 });
+        }
       });
   };
+  
 
   return (
     <>
     <Navibar />
     <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
+    <ToastContainer />
       <Container></Container>
       <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Главная • Личные документы туристов</h2>
       <Link
@@ -91,6 +100,15 @@ export const Docs = () => {
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
         <Col xs="auto" style={{ paddingBottom: '1rem' }} key={index} md={8} lg={6}>
           <Card className="shadow px-4">
+            <div style={{
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginTop: "10px",
+                marginBottom: "10px"
+              }}>
             <Link
               style={{
                 textDecoration: "none",
@@ -101,15 +119,17 @@ export const Docs = () => {
                 marginTop: "10px",
                 marginBottom: "10px"
               }}
+              onClick={() => handleToClick(docs)}
             >
               <div style={{ display: "flex", alignItems: "center" }}>
                 {(docs.fullname === null) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
-                  Фамилия Имя Отчество
+                  Нажмите, чтобы заполнить
                 </h1>}
                 <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
                   {docs.fullname}
                 </h1>
               </div>
+              </Link>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
               <Link
                 style={{
@@ -150,7 +170,7 @@ export const Docs = () => {
                 />
               </Link>
               </div>
-            </Link>
+              </div>
           </Card>
         </Col>
       </Row>      

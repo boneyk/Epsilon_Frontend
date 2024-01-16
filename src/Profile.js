@@ -11,6 +11,8 @@ export const Profile = () => {
   const [login, setLogin] = useState(""); // создаем состояние для хранения значения логина
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // создаем состояние для хранения значения логина
+  const [Instatus, setStatus] = useState(false);
+
 
   const handleLoginChange = (event) => {
     setLogin(event.target.value);
@@ -56,6 +58,9 @@ export const Profile = () => {
         .catch((error) => {
           // Обработка ошибки
           console.error("Ошибка запроса:", error);
+          if (error.response.status === 400) {
+            toast("Войдите в личный кабинет, чтобы продолжить", { autoClose: 4000 });
+          }
         });
     }else{
     const requestData = {
@@ -83,6 +88,9 @@ export const Profile = () => {
       .catch((error) => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
+        if (error.response.status === 400) {
+          toast("Войдите в личный кабинет, чтобы продолжить", { autoClose: 4000 });
+        }
       });
     }
   };
@@ -108,6 +116,7 @@ export const Profile = () => {
         setProf(response.data);
         setLogin(response.data.login);
         setEmail(response.data.email);
+        setStatus(true);
       })
       .catch((error) => {
         console.error("Ошибка запроса:", error);
@@ -121,6 +130,10 @@ export const Profile = () => {
   const handleDocksClick = () => {
     const token = localStorage.getItem("token");
     window.location.replace(`/api/documents?token=${token}`);
+  };
+  const handleHomeClick = () => {
+    localStorage.setItem("token",null);
+    window.location.replace(`/`);
   };
 
   return (
@@ -168,14 +181,31 @@ export const Profile = () => {
               onChange={handlePasswordChange}
             />
           </Form.Group>
-          <div className="mb-2">
-        <Button variant="primary" onClick={handleSubmit}>
-          Сохранить
-        </Button>{' '}
-        <Button variant="secondary" onClick={handleCancel}>
-          Отменить
+          <div className="d-flex flex-column flex-sm-row justify-content-between">
+          <div>
+            <Button variant="primary" onClick={handleSubmit}>
+              Сохранить
+            </Button>{' '}
+            <Button variant="secondary" onClick={handleCancel} className="mb-2 mb-sm-0">
+              Отменить
+            </Button>
+          </div>
+          <div>
+          <Button variant="secondary" onClick={handleHomeClick} className="mb-3 mb-sm-3"> 
+            {(Instatus === false) ? (
+                <h1 style={{ fontSize: "17px"}}>
+                    Войти
+                </h1>
+            ) : (
+                <h1 style={{ fontSize: "17px"}}>
+                    Выйти
+                </h1>
+            )}
         </Button>
-      </div>
+          </div>
+        </div>
+
+
         </Card>
         </Col>
         </Row>
@@ -202,7 +232,7 @@ export const Profile = () => {
                 height="40"
                 alt="Basket icon"
               />
-              <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>История покупок</h1>
+              <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>История заказов</h1>
             </div>
             <img
               src="/img/path_to.png"
