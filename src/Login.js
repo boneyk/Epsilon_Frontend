@@ -16,11 +16,13 @@ const [success, setSuccess] = useState(false);
 const [successError, setSuccessError] = useState("Неправильно введен логин или пароль");
 
 useEffect(() => {
+  console.log("токен из хранилища:", localStorage.getItem("token"));
   if (!loginDirty && !passwordDirty && !success) {
     setFormValid(true);
   } else {
     setFormValid(false);
   }
+  localStorage.setItem("token", null);
 }, [loginDirty, passwordDirty]);
 
 const handleLoginChange = (event) => {
