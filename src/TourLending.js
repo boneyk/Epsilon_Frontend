@@ -2,13 +2,27 @@ import Image from 'react-bootstrap/Image';
 import React, { useState, useEffect,useRef } from "react";
 import { Container, Row, Form, Col, Card, Button, Toast } from "react-bootstrap";
 import Header from "./components/Header";
+import Navibar from "./components/navibar";
 import axios from "axios";
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 
+function formatPrice(number) {
+    // Проверка, является ли number числом
+    if (typeof number !== 'number') {
+      return '';
+    }
+  
+    // Преобразование числа в строку и добавление разделителей для тысяч
+    let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+  
+    // Добавление знака валюты
+    return priceString;
+  }
+  
 
 export const TourLending = () => {
     const [tourinfo, setTour] = useState([]);
@@ -74,7 +88,7 @@ export const TourLending = () => {
         if(selectedDate !== null && selectedPersons.length > 0){
             localStorage.setItem("conf_info", JSON.stringify(requestData));
             console.log("Запрос:", localStorage.getItem("conf_info"));
-            // window.location.replace(`/api/trip`);
+            window.location.replace(`/api/trip`);
         }else{
             toast("Выберите туристов и дату", { autoClose: 4000 });
         }
@@ -133,13 +147,13 @@ export const TourLending = () => {
 
     return (
         <div>
-            <Header />
+        <Navibar />
             {/* <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid className="d-flex justify-content-center align-items-center"/> */}
             <Container className="d-flex justify-content-center align-items-center">
             <ToastContainer />
                 <Row>
                     <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
-                    <Button
+                    {/* <Button
                         onClick={handleAdd}
                         style={{
                             textDecoration: "none",
@@ -158,13 +172,13 @@ export const TourLending = () => {
                             height="30"
                             alt="Иконка редактирования"
                         />
-                    </Button>
+                    </Button> */}
                     
                         <div className="d-flex justify-content-center align-items-center" style={{ marginTop:'1rem', marginBottom:'1rem' }}>
                             <h1 style={{ fontSize: "38px", margin: "0" }}>• Описание тура •</h1>
                         </div>
                     <Row style={{ justifyContent: "center", alignItems: "center",marginBottom:"2rem" }}>
-                        <Col xs="auto" className="" md={8} lg={4}>
+                        <Col xs="auto" className="" md={4} lg={4}>
                             <Card
                                 className="shadow px-4"
                                 style={{ backgroundColor: "#B8CBE9", borderColor: "#B8CBE9", marginBottom: "20px" }}
@@ -177,16 +191,18 @@ export const TourLending = () => {
 
                                 </div>
                             </Card>
+                        </Col> 
+                        <Col xs="auto" className="" md={4} lg={4}>
+                        <Col>
+                            <img src={`/img/${tourinfo.tour?.images[2].filename}.png`} style={{ width: "105%", height: "auto", marginRight: "20px", marginBottom: "1rem" }} />
                         </Col>
-                        <Col xs="auto" className="p-0" >
-                            <Col>
-                            <img src={`/img/${tourinfo.tour?.images[2].filename}.png`} style={{ width: "575px", height: "349px", marginRight: "20px", marginBottom: "1rem" }} />
-                            </Col>
-                            <Col>
-                            <img src={`/img/${tourinfo.tour?.images[3].filename}.png`} style={{ width: "272px", height: "181px", marginRight: "20px", marginBottom: "1rem" }} />
-                            <img src={`/img/${tourinfo.tour?.images[4].filename}.png`} style={{ width: "272px", height: "181px", marginRight: "20px", marginBottom: "1rem" }} />
-                            </Col>
+                        <Col>
+                            <div style={{ display: "flex" }}>
+                                <img src={`/img/${tourinfo.tour?.images[3].filename}.png`} style={{ width: "50%", height: "auto", marginRight: "20px", marginBottom: "1rem" }} />
+                                <img src={`/img/${tourinfo.tour?.images[4].filename}.png`} style={{ width: "50%", height: "auto", marginBottom: "1rem" }} />
+                            </div>
                         </Col>
+                    </Col>
                     </Row>
 
                     <Row>
@@ -276,26 +292,21 @@ export const TourLending = () => {
 
 
 
-
-
-                    <Row style={{ justifyContent: "center", alignItems: "center", borderTop:'1px solid black', borderBottom: '1px solid black', marginBottom: "2rem"}}>
-                        <Col>
-                            <div className="d-flex justify-content-between align-items-center">
-                            <Col>
-                            <h1 className="text-center" style={{ fontSize: "45px", marginTop: "3rem",marginBottom:"2rem" }}>Цена за тур:<br/>{tourinfo.tour?.price_per_one} ₽</h1>
-                            </Col>
-                        <Col>
-                            <Button variant="secondary" className="text-center" style={{fontSize: "45px",background:"#8BB2BB",width:"300px", height: "100px", borderColor:"#8BB2BB", color: "black"}}
+                    <Row className="d-flex justify-content-between align-items-center" style={{ borderTop:'1px solid black', borderBottom: '1px solid black',marginBottom:"2rem"}} xs="auto">
+                    <Container style={{marginBottom:"2rem",marginTop: "2rem" }}>
+                            <h1 className="text-center" style={{ fontSize: "40px"}}>Цена за тур:<br/>{formatPrice(tourinfo.tour?.price_per_one)} ₽</h1>
+                    </Container>
+                    <Container style={{marginBottom:"2rem",marginTop: "2rem" }}>
+                        <Container>
+                            <Button variant="secondary" className="text-center" style={{fontSize: "35px",background:"#8BB2BB",width:"250px", height: "100px", borderColor:"#8BB2BB", color: "black"}}
                              onClick={handleBuy}
                              >
                                 Заказать тур
                             </Button>
-                            {/* <ToastContainer /> */}
-                        </Col>
-                            </div>
-                        </Col>
+                            <ToastContainer />
+                        </Container>
+                    </Container> 
                     </Row>
-
 
 
 

@@ -4,6 +4,14 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 
+function formatPrice(number) {
+  // Преобразование числа в строку и добавление разделителей для тысяч
+  let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+
+  // Добавление знака валюты
+  return priceString;
+}
+
 export const Favorite = () => {
   const [fave, setFave] = useState([]);
   const token = localStorage.getItem("token");
@@ -56,7 +64,7 @@ export const Favorite = () => {
               <Card.Img src={`/img/${tour.images[0].filename}.png`} onClick={() => handleCardClick(tour)} />
               <Card.Body onClick={() => handleCardClick(tour)}>
                 <Card.Title>{tour.country},{tour.city}</Card.Title>
-                <Card.Text>{tour.price_per_one} ₽</Card.Text>
+                <Card.Text>{formatPrice(tour.price_per_one)} ₽</Card.Text>
               </Card.Body>
               <Card.Footer >
               <Button style={{ display: "block", margin: "auto", backgroundColor: "#3C5A5C",borderColor: "#3C5A5C" }} onClick={() => handleDel(tour)}>

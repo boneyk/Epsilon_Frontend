@@ -5,6 +5,14 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+function formatPrice(number) {
+  // Преобразование числа в строку и добавление разделителей для тысяч
+  let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+
+  // Добавление знака валюты
+  return priceString;
+}
+
 export const Tours = () => {
   const [tours, setTours] = useState([]);
   const [status, setStatus] = useState(localStorage.getItem("token") !== null);
@@ -55,7 +63,7 @@ export const Tours = () => {
                 <Card.Body>
                   <Card.Title>{tour.name}</Card.Title>
                   <Card.Text>{tour.tour_type}</Card.Text>
-                  <Card.Text>Стоимость: {tour.price_per_one}</Card.Text>
+                  <Card.Text>Стоимость: {formatPrice(tour.price_per_one)} ₽</Card.Text>
                 </Card.Body>
               </Card>
             </Col>

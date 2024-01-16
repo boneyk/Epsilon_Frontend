@@ -6,7 +6,18 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+function formatPrice(number) {
+  // Проверка, является ли number числом
+  if (typeof number !== 'number') {
+    return '';
+  }
 
+  // Преобразование числа в строку и добавление разделителей для тысяч
+  let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+
+  // Добавление знака валюты
+  return priceString;
+}
 
 export const Confirm = () => {
     const info = JSON.parse(localStorage.getItem("conf_info"));
@@ -31,7 +42,7 @@ useEffect(() => {
 
 const handleBuy = (event) => {
   event.preventDefault();
-  toast("Спасибо за покупку!", { autoClose: 5000 });
+  toast("Спасибо за покупку! Ваш заказ перемещен в обработку. Зайдите в личный кабинет, чтобы проверить информацию", { autoClose: 5000 });
   axios
     .post("/api/trip/add",info,{
       headers: {
@@ -127,7 +138,7 @@ const handleToClick = (tour) => {
                 </Card.Text>
                 <h5>Цена:</h5>
                 <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>
-                    {confinfo.tour?.price_per_one * confinfo.person_list?.length} ₽
+                    {formatPrice(confinfo.tour?.price_per_one * confinfo.person_list?.length)} ₽
                 </Card.Text>
                 <h5>Описание тура:</h5>
                 <Card.Text className="text-center" style={{ background: "#F3F6FB", borderRadius: "10px" }}>

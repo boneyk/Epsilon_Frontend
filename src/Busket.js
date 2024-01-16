@@ -4,6 +4,14 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 
+function formatPrice(number) {
+  // Преобразование числа в строку и добавление разделителей для тысяч
+  let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+
+  // Добавление знака валюты
+  return priceString;
+}
+
 export const Busket = () => {
   const [hist, setHist] = useState([]);
   const token = localStorage.getItem("token");
@@ -50,7 +58,7 @@ export const Busket = () => {
               <Card.Img src={`/img/${hist.bookingEntity.tour.images[0].filename}.png`} onClick={() => handleCardClick(hist)} />
               <Card.Body onClick={() => handleCardClick(hist)}>
                 <Card.Title>{hist.bookingEntity.tour.country},{hist.bookingEntity.tour.city}</Card.Title>
-                <Card.Text>{hist.bookingEntity.tour.price_per_one * hist.people_amount} ₽</Card.Text>
+                <Card.Text>{formatPrice(hist.bookingEntity.tour.price_per_one * hist.people_amount)} ₽</Card.Text>
               </Card.Body>
               <Card.Footer >
                 <Card.Text>{hist.status}</Card.Text>
