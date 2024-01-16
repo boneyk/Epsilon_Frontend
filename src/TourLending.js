@@ -16,15 +16,7 @@ export const TourLending = () => {
     const token = localStorage.getItem("token");
     console.log("tour_id из хранилища:", tour_id);
     console.log("токен из хранилища:", token);
-    const [selectedPers, setSelectedPers] = useState([]);
-    const [showNotification, setShowNotification] = useState(false);
-    const timerRef = useRef(null);
   
-    
-    const [show1, setShow1] = useState(false);
-  const [show2, setShow2] = useState(false);
-  const [target1, setTarget1] = useState(null);
-  const [target2, setTarget2] = useState(null);
   const ref = useRef(null);
     
 
@@ -60,12 +52,7 @@ export const TourLending = () => {
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
-            toast.success("Тур успешно добавлен в избранное", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 3000,
-                hideProgressBar: true,
-                closeButton: false
-              });
+            toast("Тур успешно добавлен в избранное", { autoClose: 4000 });
           })
           .catch((error) => {
             // Обработка ошибки
@@ -140,36 +127,43 @@ export const TourLending = () => {
             <Header />
             {/* <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid className="d-flex justify-content-center align-items-center"/> */}
             <Container className="d-flex justify-content-center align-items-center">
+            <ToastContainer />
                 <Row>
                     <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
-                    <Link
-                            onClick={handleAdd}
-                            style={{
-                                textDecoration: "none",
-                                color: "black",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "flex-end", // Добавляем свойство для выравнивания по правому краю
-                                marginTop:'1rem'
-                            }}
-                            ref={ref}
-                        >
-                            <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить в избранное</h1> 
-                            <img
-                                src="/img/edit_ico.png"
-                                width="20"
-                                height="30"
-                                alt="Иконка редактирования"
-                            />
-                        </Link>
-                        <ToastContainer />
-
-                        {showNotification && (
-                            <div style={{ marginTop: "1rem" }}>
-                            Тур успешно добавлен в избранное
-                            </div>
-                        )}
-
+                    <Button
+                        onClick={handleAdd}
+                        style={{
+                            textDecoration: "none",
+                            color: "black",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end", // Добавляем свойство для выравнивания по правому краю
+                            marginTop:'1rem',
+                            backgroundColor: 'transparent', // Делаем кнопку прозрачной
+                            border: 'none', // Убираем границу у кнопки
+                        }}
+                        ref={ref}
+                    >
+                        <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить в избранное</h1> 
+                        <img
+                            src="/img/edit_ico.png"
+                            width="20"
+                            height="30"
+                            alt="Иконка редактирования"
+                        />
+                    </Button>
+                    {/* <Toast
+                        show={showNotification}
+                        onClose={() => setShowNotification(false)}
+                        style={{
+                            position: 'absolute',
+                            top: 20,
+                            right: 20,
+                            backgroundColor: 'blue', // Цвет фона toast
+                        }}
+                    >
+                        <Toast.Body>Тур успешно добавлен в избранное</Toast.Body>
+                    </Toast> */}
                         <div className="d-flex justify-content-center align-items-center" style={{ marginTop:'1rem', marginBottom:'1rem' }}>
                             <h1 style={{ fontSize: "38px", margin: "0" }}>• Описание тура •</h1>
                         </div>
@@ -298,7 +292,7 @@ export const TourLending = () => {
                              >
                                 Купить тур
                             </Button>
-                            <ToastContainer />
+                            {/* <ToastContainer /> */}
                         </Col>
                             </div>
                         </Col>

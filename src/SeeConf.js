@@ -29,6 +29,11 @@ useEffect(() => {
     });
 }, []);
 
+const handleToClick = (tour) => {
+  localStorage.setItem("doc_token",tour.token)
+  window.location.replace(`/api/documents/person?doc_token=${tour.token}`);
+};
+
   return (
     <>
       <Navibar />
@@ -53,7 +58,9 @@ useEffect(() => {
                 justifyContent: "space-between",
                 marginTop: "10px",
                 marginBottom: "10px",
-              }}>
+              }}
+              onClick={() => handleToClick(confinfo)}
+              >
             <Card.Text className="text-center" style={{background:"#F3F6FB",borderRadius: "10px"}}>
                 {confinfo.fullname}
                 <img

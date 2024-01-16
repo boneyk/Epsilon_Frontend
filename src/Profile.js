@@ -3,16 +3,14 @@ import { Container, Row, Form,Col,Card,Button,Toast } from "react-bootstrap";
 import axios from "axios";
 import Navibar from "./components/navibar";
 import { Link } from "react-router-dom";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Profile = () => {
   const [prof, setProf] = useState([]);
   const [login, setLogin] = useState(""); // создаем состояние для хранения значения логина
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // создаем состояние для хранения значения логина
-
-  const token = localStorage.getItem("token");
-  console.log("токен из хранилища:", token);
 
   const handleLoginChange = (event) => {
     setLogin(event.target.value);
@@ -39,7 +37,9 @@ export const Profile = () => {
         "email": email,
       };
       
-      console.log(requestData); // выводим requestData в консоль (для проверки)
+      console.log(requestData);
+      const token = localStorage.getItem("token");
+      // выводим requestData в консоль (для проверки)
       axios
         .patch(`/api/users/info?token=${token}`, requestData, {
           headers: {
@@ -50,9 +50,8 @@ export const Profile = () => {
         .then((response) => {
           // Обработка успешного ответа
           console.log("Ответ сервера:", response.data);
-          <Toast>
-            <Toast.Body>Информация успешно обновлена</Toast.Body>
-          </Toast>
+          localStorage.setItem("token", response.data.token);
+          toast("Информация успешно обновлена", { autoClose: 4000 });
         })
         .catch((error) => {
           // Обработка ошибки
@@ -65,7 +64,9 @@ export const Profile = () => {
       "password":password
     };
     
-    console.log(requestData); // выводим requestData в консоль (для проверки)
+    console.log(requestData);
+    const token = localStorage.getItem("token");
+    // выводим requestData в консоль (для проверки)
     axios
       .patch(`/api/users/info?token=${token}`, requestData, {
         headers: {
@@ -76,9 +77,8 @@ export const Profile = () => {
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
-        <Toast>
-          <Toast.Body>Информация успешно обновлена</Toast.Body>
-        </Toast>
+        localStorage.setItem("token", response.data.token);
+        toast("Информация успешно обновлена", { autoClose: 4000 });
       })
       .catch((error) => {
         // Обработка ошибки
@@ -87,7 +87,15 @@ export const Profile = () => {
     }
   };
 
+  const handleCancel = () => {
+    // Вернуть исходные значения полей
+    setLogin(prof.login);
+    setEmail(prof.email);
+    console.log("Отменить:", prof.login,prof.email, login, email);
+  };
+
   useEffect(() => {
+    const token = localStorage.getItem("token");
     axios
       .get(`/api/users/info?token=${token}`, {
         headers: {
@@ -98,6 +106,8 @@ export const Profile = () => {
       .then((response) => {
         console.log("Ответ сервера:", response.data);
         setProf(response.data);
+        setLogin(response.data.login);
+        setEmail(response.data.email);
       })
       .catch((error) => {
         console.error("Ошибка запроса:", error);
@@ -105,9 +115,11 @@ export const Profile = () => {
   }, []);
 
   const handleHistClick = () => {
+    const token = localStorage.getItem("token");
     window.location.replace(`/api/tours/history?token=${token}`);
   };
   const handleDocksClick = () => {
+    const token = localStorage.getItem("token");
     window.location.replace(`/api/documents?token=${token}`);
   };
 
@@ -115,6 +127,7 @@ export const Profile = () => {
     <>
       <Navibar />
       <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
+      <ToastContainer />
         <Container></Container>
         <h2 style={{ paddingLeft: '6rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>• Личные данные •</h2>
       <Row style={{justifyContent: "center", alignItems: "center"}}>
@@ -131,7 +144,7 @@ export const Profile = () => {
             <Form.Control
               type="text"
               name="login"
-              defaultValue={prof.login} 
+              value={login} 
               onChange={handleLoginChange}
             />
           </Form.Group>
@@ -141,7 +154,7 @@ export const Profile = () => {
             <Form.Control
               type="email"
               name="email"
-              defaultValue={prof.email}
+              value={email}
               onChange={handleEmailChange} 
             />
           </Form.Group>
@@ -159,7 +172,7 @@ export const Profile = () => {
         <Button variant="primary" onClick={handleSubmit}>
           Сохранить
         </Button>{' '}
-        <Button variant="secondary">
+        <Button variant="secondary" onClick={handleCancel}>
           Отменить
         </Button>
       </div>
