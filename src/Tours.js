@@ -149,7 +149,7 @@ export const Tours = () => {
         <Container></Container>
         {/* <h2 style={{ paddingLeft: '6rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Наши туры:</h2> */}
         <Row style={{justifyContent: "center", alignItems: "center"}}>
-          {tours.map((tour, index) => (
+          {tours?.map((tour, index) => (
             <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
               <Card style={{ width: '18rem',background:'#DDDFEB' }} onClick={() => handleCardClick(tour)}>
                 <Card.Img src={`/img/${tour.images[0].filename}.png`} />
