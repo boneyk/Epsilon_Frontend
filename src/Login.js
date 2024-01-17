@@ -150,7 +150,7 @@ const blurHandler = (e) => {
                               textDecoration: "none",color: "white",
                             }}
                             onAbort={!success}
-                            to="api/tours"
+                            // to="api/tours"
                           >
                             Вход
                           </Link>
