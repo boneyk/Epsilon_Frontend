@@ -36,7 +36,8 @@ export const Busket = () => {
       "date_id": tour.bookingEntity?.date.id,
       "tour_id": tour.bookingEntity?.tour.id,
       "token": token,
-      "person_list": tour.participants
+      "person_list": tour.participants,
+      "status": tour.status
     };
     // Преобразование в строку и сохранение в localStorage
       localStorage.setItem("conf_info", JSON.stringify(requestData));
@@ -54,14 +55,14 @@ export const Busket = () => {
       <Row style={{justifyContent: "center", alignItems: "center"}}>
         {hist.map((hist, index) => (
           <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-            <Card style={{ width: '18rem',background:'#DDDFEB' }}>
+            <Card style={{ width: '18rem',background:'#DDDFEB',borderRadius:'3rem' }}>
               <Card.Img src={`/img/${hist.bookingEntity.tour.images[0].filename}.png`} onClick={() => handleCardClick(hist)} />
               <Card.Body onClick={() => handleCardClick(hist)}>
                 <Card.Title>{hist.bookingEntity.tour.country},{hist.bookingEntity.tour.city}</Card.Title>
                 <Card.Text>{formatPrice(hist.bookingEntity.tour.price_per_one * hist.people_amount)} ₽</Card.Text>
               </Card.Body>
               <Card.Footer >
-                <Card.Text>{hist.status}</Card.Text>
+                <Card.Text style={{marginLeft:'1rem'}}>{hist.status}</Card.Text>
               </Card.Footer>
             </Card>
           </Col>

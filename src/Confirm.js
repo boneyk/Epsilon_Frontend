@@ -42,7 +42,6 @@ useEffect(() => {
 
 const handleBuy = (event) => {
   event.preventDefault();
-  toast("Спасибо за покупку! Ваш заказ перемещен в обработку. Зайдите в личный кабинет, чтобы проверить информацию", { autoClose: 5000 });
   axios
     .post("/api/trip/add",info,{
       headers: {
@@ -53,10 +52,12 @@ const handleBuy = (event) => {
     .then((response) => {
       // Обработка успешного ответа
       console.log("Ответ сервера:", response.data);
+      toast("Спасибо за покупку! Ваш заказ перемещен в обработку. Зайдите в Профиль в раздел История заказов, чтобы проверить информацию", { autoClose: 5000 });
     })
     .catch((error) => {
       // Обработка ошибки
       console.error("Ошибка запроса:", error);
+      toast("К сожалению, возникла ошибка с подтверждением тура", { autoClose: 5000 });
     });
 };
 

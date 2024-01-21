@@ -15,18 +15,102 @@ export const PersDock = () => {
     const [phone, setPhone] = useState("");
     const doc_token = localStorage.getItem("doc_token");
 
+    const [fio, setFio] = useState(""); // создаем состояние для хранения значения логина
+    const [sex, setSex] = useState("");
+    const [dateB, setDateB] = useState("");
+    const [citez, setCitez] = useState("");
+    const [seria, setSeria] = useState("");
+    const [number, setNumber] = useState("");
+    const [dateG, setDateG] = useState("");
+    const [whoG, setWhoG] = useState("");
+    const [reg, setReg] = useState("");
+
+    const handleFioChange = (event) => {
+      const { value } = event.target;
+      if (/^[А-Яа-яЁё\s\-]*$/.test(value)) {
+        setFio(value);
+      }
+    };
+    
+    const handleSexChange = (event) => {
+      const { value } = event.target;
+      if (value === "Мужской" || value === "Женский") {
+        setSex(value);
+      }
+    };
+    
+    const handleDateBChange = (event) => {
+      const { value } = event.target;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        setDateB(value);
+      }
+    };
+    
+    const handleCitezChange = (event) => {
+      const { value } = event.target;
+      if (/^[А-Яа-яЁё\s\-]*$/.test(value)) {
+        setCitez(value);
+      }
+    };
+    
+    const handleSeriaChange = (event) => {
+      const { value } = event.target;
+      if (/^[\d+\-\s]*$/.test(value)) {
+        setSeria(value);
+      }
+    };
+    
+    const handleNumberChange = (event) => {
+      const { value } = event.target;
+      if (/^[\d+\-\s]*$/.test(value)) {
+        setNumber(value);
+      }
+    };
+    
+    const handleDateGChange = (event) => {
+      const { value } = event.target;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        setDateG(value);
+      }
+    };
+    
+    const handleWhoGChange = (event) => {
+      const { value } = event.target;
+      if (/^[А-Яа-яЁё\s\-]*$/.test(value)) {
+        setWhoG(value);
+      }
+    };
+    
+    const handleRegChange = (event) => {
+      const { value } = event.target;
+      if (/^[А-Яа-яЁё\s\-]*$/.test(value)) {
+        setReg(value);
+      }
+    };
+    
+    
+
     const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-    };
+  const handleNameChange = (e) => {
+    const newName = e.target.value;
+    // Валидация ФИО: только кириллица, пробелы и дефисы
+    if (/^[А-Яа-яЁё\s\-]*$/.test(newName)) {
+      setName(newName);
+    }
+  };
   
-    const handlePhoneChange = (event) => {
-        setPhone(event.target.value);
-    };
+  const handlePhoneChange = (e) => {
+    const newPhone = e.target.value;
+    // Валидация номера телефона: только цифры, знак плюса и дефис
+    if (/^[\d+\-\s]*$/.test(newPhone)) {
+      setPhone(newPhone);
+    }
+  };
+  
 
     useEffect(() => {
         console.log("Запрос:", doc_token);
@@ -44,7 +128,7 @@ export const PersDock = () => {
           });
       }, []);
 
-    const handleSubmit = (event) => {
+    const handleSubmitPersInfo = (event) => {
     const requestData = {
         "fullname": name,
         "phone_number": phone,
@@ -74,6 +158,47 @@ export const PersDock = () => {
       setPhone(pers.phone_number);
     };
 
+    const handleSubmitPass = (event) => {
+      const requestData = {
+        "fullname": fio,
+        "sex": sex,
+        "dob": dateB,
+        "citizenship": citez,
+        "serial": seria,
+        "number": number,
+        "dog": dateG,
+        "wg": whoG,
+        "registration": reg
+      };
+      console.log("Запрос паспорта:", requestData);
+      axios.post(`/api/documents/passport?doc_token=${doc_token}`, requestData, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+        },
+      })
+      .then((response) => {
+        // Обработка успешного ответа
+        console.log("Ответ сервера:", response.data);
+        toast("Информация о паспорте успешно добавлена", { autoClose: 4000 });
+        setFio(fio);
+        setSex(sex);
+        setCitez(citez);
+        setSeria(seria);
+        setNumber(number);
+        setDateG(dateG);
+        setWhoG(whoG);
+        setReg(reg);
+        setDateB(dateB);
+      })
+      .catch((error) => {
+        // Обработка ошибки
+        console.error("Ошибка запроса:", error);
+        toast("Возникла ошибка с добавлением информации о паспорте", { autoClose: 4000 });
+      });
+    };
+    
+
     return (
         <>
         <Navibar />
@@ -97,19 +222,19 @@ export const PersDock = () => {
                         />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="text">
-                        <Form.Label className="text-center">Номер телефона</Form.Label>
-                        <Form.Control
-                          type="text"
-                          name="phone"
-                          placeholder="Введите номер телефона"
-                          value={phone} 
-                        //   onBlur={e=>blurHandler(e)}
-                          onChange={handlePhoneChange}
-                        />
-                      </Form.Group>
+                  <Form.Label className="text-center">Номер телефона</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="phone"
+                    placeholder="Введите номер телефона"
+                    value={phone} 
+                    onChange={handlePhoneChange}
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                  />
+                </Form.Group>
                       <div className="mb-2">
                         <Button variant="primary" 
-                        onClick={handleSubmit}
+                        onClick={handleSubmitPersInfo}
                         >
                         Сохранить
                         </Button>{' '}
@@ -163,10 +288,12 @@ export const PersDock = () => {
                           placeholder="Введите ФИО"
                           value={pers.passport?.fullname}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handleLoginChange}
+                          onChange={handleFioChange}
                         />
                       </Form.Group>
                       {/* {(passwordDirty) && <div style ={{color:'red'}}>{passwordError}</div>} */}
+                      <Row>
+                      <Col>
                       <Form.Group
                         className="mb-3"
                         controlId="text"
@@ -178,24 +305,27 @@ export const PersDock = () => {
                           placeholder="Введите пол"
                           value={pers.passport?.sex}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleSexChange}
                         />
                       </Form.Group>
-
+                      </Col>
+                      <Col>
                       <Form.Group
                         className="mb-3"
                         controlId="text"
                       >
                         <Form.Label>Дата рождения</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="date"
                           name = "password"
                           placeholder="Введите дату рождения"
                           value={pers.passport?.date_of_birth}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleDateBChange}
                         />
                       </Form.Group>
+                      </Col>
+                      </Row>
 
                       <Form.Group
                         className="mb-3"
@@ -208,39 +338,44 @@ export const PersDock = () => {
                           placeholder="Введите гражданство"
                           value={pers.passport?.citizenship}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleCitezChange}
                         />
                       </Form.Group>
 
+                      <Row>
+                      <Col>
                       <Form.Group
                         className="mb-3"
                         controlId="text"
                       >
                         <Form.Label>Серия</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="number"
                           name = "password"
                           placeholder="Введите серию паспорта"
                           value={pers.passport?.serial}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleSeriaChange}
                         />
                       </Form.Group>
-
+                      </Col>
+                      <Col>
                       <Form.Group
                         className="mb-3"
                         controlId="text"
                       >
                         <Form.Label>Номер</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="number"
                           name = "password"
                           placeholder="Введите номер паспорта"
                           value={pers.passport?.number}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleNumberChange}
                         />
                       </Form.Group>
+                      </Col>
+                      </Row>
 
                       <Form.Group
                         className="mb-3"
@@ -248,12 +383,12 @@ export const PersDock = () => {
                       >
                         <Form.Label>Дата выдачи:</Form.Label>  
                         <Form.Control
-                          type="text"
+                          type="date"
                           name = "password"
                           placeholder="Введите дату выдачи паспорта"
                           value={pers.passport?.date_of_given}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleDateGChange}
                         />
                       </Form.Group>
 
@@ -268,7 +403,7 @@ export const PersDock = () => {
                           placeholder="Введите кем выдан паспорт"
                           value={pers.passport?.who_gave}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleWhoGChange}
                         />
                       </Form.Group>
 
@@ -283,14 +418,14 @@ export const PersDock = () => {
                           placeholder="Введите регистрацию"
                           value={pers.passport?.registration}
                         //   onBlur={e=>blurHandler(e)}
-                        //   onChange={handlePasswordChange}
+                          onChange={handleRegChange}
                         />
                       </Form.Group>
 
 
                       <div className="mb-2"> 
                         <Button variant="primary" 
-                        // onClick={handleSubmit}
+                        onClick={handleSubmitPass}
                         >
                         Сохранить
                         </Button>{' '}

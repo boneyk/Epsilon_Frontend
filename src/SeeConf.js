@@ -51,7 +51,7 @@ const handleToClick = (tour) => {
       <Navibar />
       <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
         <Container></Container>
-        <h2 style={{ paddingLeft: '3rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Подтверждение заказа</h2>
+        <h2 style={{ paddingLeft: '3rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Статус заказа: {info?.status}</h2>
       <Row style={{justifyContent: "center", alignItems: "center"}}>
       <Col xs="auto" md={8} lg={4}>
       <Card

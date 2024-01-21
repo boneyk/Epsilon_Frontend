@@ -218,7 +218,7 @@ export const TourLending = () => {
                         >
                             • Туристы •
                             {(tourinfo.persons?.length === 0) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
-                                Для покупки тура Вам необходимо добавить туристов в личном кабинете
+                                Для покупки тура Вам необходимо добавить туристов в личном профиле в разделе "Туристы и Документы"
                             </h1>}
                             {tourinfo.persons?.map((type) => (
                             <Form

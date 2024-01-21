@@ -60,7 +60,7 @@ export const Favorite = () => {
       <Row style={{justifyContent: "center", alignItems: "center"}}>
         {fave.map((tour, index) => (
           <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-            <Card style={{ width: '18rem',background:'#DDDFEB' }}>
+            <Card style={{ width: '18rem',background:'#DDDFEB',borderRadius:'3rem' }}>
               <Card.Img src={`/img/${tour.images[0].filename}.png`} onClick={() => handleCardClick(tour)} />
               <Card.Body onClick={() => handleCardClick(tour)}>
                 <Card.Title>{tour.country},{tour.city}</Card.Title>

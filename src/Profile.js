@@ -267,7 +267,7 @@ export const Profile = () => {
                 height="40"
                 alt="Basket icon"
               />
-              <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>Документы</h1>
+              <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>Туристы и Документы</h1>
             </div>
             <img
               src="/img/path_to.png"
