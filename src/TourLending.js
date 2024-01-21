@@ -153,7 +153,7 @@ export const TourLending = () => {
             <ToastContainer />
                 <Row>
                     <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
-                    {/* <Button
+                    <Button
                         onClick={handleAdd}
                         style={{
                             textDecoration: "none",
@@ -172,7 +172,7 @@ export const TourLending = () => {
                             height="30"
                             alt="Иконка редактирования"
                         />
-                    </Button> */}
+                    </Button>
                     
                         <div className="d-flex justify-content-center align-items-center" style={{ marginTop:'1rem', marginBottom:'1rem' }}>
                             <h1 style={{ fontSize: "38px", margin: "0" }}>• Описание тура •</h1>

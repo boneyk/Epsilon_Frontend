@@ -16,6 +16,9 @@ import { Confirm } from "./Confirm"
 import Fotter from "./components/Fotter"
 import { PersDock } from "./PersDock";
 import { SeeConf } from "./SeeConf";
+import { ManagerMain } from "./ManagerMain";
+import { MangerEdit } from "./ManagerEdit";
+import { ManagerAdd } from "./ManagerAdd";
 
 
 function App() {
@@ -41,6 +44,9 @@ function App() {
       <Route path="/api/trip" element={<Confirm/>} />
       <Route path="/api/trip/conf" element={<SeeConf/>} />
       <Route path="api/tours" element={<Tours />} />
+      <Route path="api/manager/tours" element={<ManagerMain/>} />
+      <Route path="api/manager/edit" element={<MangerEdit/>} />
+      <Route path="api/manager/add" element={<ManagerAdd/>} />
       </Routes>
       </Router>
       <Fotter/>

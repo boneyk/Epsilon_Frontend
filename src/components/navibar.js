@@ -13,10 +13,12 @@ export default function Navibar() {
               <img src="/img/touragency.png" className="navimg" alt="tourAgency icon"/>
             </Link>
           </Navbar.Brand>
+          <h1 style={{ display: "flex",fontSize: "15px", textAlign: "center",marginLeft: "1rem" }}>Служба поддержки: <br/> 8 (900) 000 - 00 - 00</h1>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="navelements">
-              <h1 style={{ fontSize: "15px", textAlign: "center" }}>Служба поддержки: <br/> 8 (900) 000 - 00 - 00</h1>
+            <Nav className="me-auto">
+            </Nav>
+            <Nav style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
               <Nav.Link eventKey="favorite">
                 <Link to="/api/tours/favorite" style={{ textDecoration: 'none' }}>
                   <div style={{ textAlign: "center" }} className="navtext">
