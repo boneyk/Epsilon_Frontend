@@ -125,17 +125,9 @@ export const ManagerProf = () => {
       });
   }, []);
 
-  const handleHistClick = () => {
-    const token = localStorage.getItem("token");
-    window.location.replace(`/api/tours/history?token=${token}`);
-  };
-  const handleDocksClick = () => {
-    const token = localStorage.getItem("token");
-    window.location.replace(`/api/documents?token=${token}`);
-  };
   const handleHomeClick = () => {
     localStorage.setItem("token",null);
-    window.location.replace(`/`);
+    window.location.href = `/`;
   };
 
   return (

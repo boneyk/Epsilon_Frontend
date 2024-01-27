@@ -63,7 +63,7 @@ const handleBuy = (event) => {
 
 const handleToClick = (tour) => {
   localStorage.setItem("doc_token",tour.token)
-  window.location.replace(`/api/documents/person?doc_token=${tour.token}`);
+  window.location.href = `/api/documents/person?doc_token=${tour.token}`;
 };
     
 

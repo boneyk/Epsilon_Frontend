@@ -34,7 +34,7 @@ export const PersDock = () => {
     
     const handleSexChange = (event) => {
       const { value } = event.target;
-      if (value === "Мужской" || value === "Женский") {
+      if (value.toLowerCase() === "мужской" || value.toLowerCase() === "женский" || value.toLowerCase() === "муж." || value.toLowerCase() === "жен.") {
         setSex(value);
       }
     };
@@ -54,18 +54,19 @@ export const PersDock = () => {
     };
     
     const handleSeriaChange = (event) => {
-      const { value } = event.target;
-      if (/^[\d+\-\s]*$/.test(value)) {
+      const value = event.target.value;
+      if (/^\d{0,4}$/.test(value)) {
         setSeria(value);
       }
     };
     
     const handleNumberChange = (event) => {
-      const { value } = event.target;
-      if (/^[\d+\-\s]*$/.test(value)) {
+      const value = event.target.value;
+      if (/^\d{0,6}$/.test(value)) {
         setNumber(value);
       }
     };
+    
     
     const handleDateGChange = (event) => {
       const { value } = event.target;
@@ -103,12 +104,46 @@ export const PersDock = () => {
     }
   };
   
+  const [error, setErrorMessage] = useState(false);
   const handlePhoneChange = (e) => {
     const newPhone = e.target.value;
-    // Валидация номера телефона: только цифры, знак плюса и дефис
-    if (/^[\d+\-\s]*$/.test(newPhone)) {
+    // Валидация номера телефона: только 11 цифр
+    if (/^\d{0,11}$/.test(newPhone)) {
       setPhone(newPhone);
     }
+  };
+  
+  const [phoneE, setEphone] = useState(false);
+  const [seriaE, setEseria] = useState(false);
+  const [numberE, setEnumber] = useState(false);
+
+  const blurHandler = (e) => {
+    switch (e.target.name) {
+      case "phone":
+        if (e.target.value.length < 11) {
+          setEphone(true);
+          setErrorMessage("Номер телефона должен содержать 11 цифр");
+        } else {
+          setEphone(false);
+        }
+        break;
+      case "seria":
+        if (e.target.value.length !== 4) {
+          setEseria(true);
+          setErrorMessage("Серия паспорта должена содержать 4 цифры");
+        } else {
+          setEseria(false);
+        }
+        break;
+      case "number":
+        if (e.target.value.length !== 6) {
+          setEnumber(true);
+          setErrorMessage("Номер паспорта должена содержать 6 цифр");
+        } else {
+          setEnumber(false);
+        }
+        break;
+      }
   };
   
 
@@ -133,6 +168,7 @@ export const PersDock = () => {
         "fullname": name,
         "phone_number": phone,
         };
+    if(phone.length == 11){
     axios.post(`/api/documents/personalInfo?doc_token=${doc_token}`,requestData,{
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -150,6 +186,7 @@ export const PersDock = () => {
       // Обработка ошибки
       console.error("Ошибка запроса:", error);
     });
+  }
     };
 
     const handleCancel = () => {
@@ -171,6 +208,9 @@ export const PersDock = () => {
         "registration": reg
       };
       console.log("Запрос паспорта:", requestData);
+      if(seria.length === 4 && number.length === 6
+         && (sex.toLowerCase() === "мужской" || sex.toLowerCase() === "женский" || sex.toLowerCase() === "жен." || sex.toLowerCase() === "муж.")
+         && fio === name){
       axios.post(`/api/documents/passport?doc_token=${doc_token}`, requestData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -196,6 +236,9 @@ export const PersDock = () => {
         console.error("Ошибка запроса:", error);
         toast("Возникла ошибка с добавлением информации о паспорте", { autoClose: 4000 });
       });
+    }else{
+      toast("Неправильно введены данные паспорта", { autoClose: 4000 });
+    }
     };
     
 
@@ -224,14 +267,16 @@ export const PersDock = () => {
                 <Form.Group className="mb-3" controlId="text">
                   <Form.Label className="text-center">Номер телефона</Form.Label>
                   <Form.Control
-                    type="number"
+                    type="text"
                     name="phone"
                     placeholder="Введите номер телефона"
                     value={phone} 
                     onChange={handlePhoneChange}
+                    onBlur={e=>blurHandler(e)}
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                   />
                 </Form.Group>
+                {(phoneE) && <div style ={{color:'red'}}>{error}</div>}
                       <div className="mb-2">
                         <Button variant="primary" 
                         onClick={handleSubmitPersInfo}
@@ -280,7 +325,7 @@ export const PersDock = () => {
                         <Form.Label>Пол</Form.Label>
                         <Form.Control
                           type="text"
-                          name = "password"
+                          name = "sex"
                           placeholder="Введите пол"
                           value={pers.passport?.sex}
                         //   onBlur={e=>blurHandler(e)}
@@ -316,7 +361,7 @@ export const PersDock = () => {
                           name = "password"
                           placeholder="Введите гражданство"
                           value={pers.passport?.citizenship}
-                        //   onBlur={e=>blurHandler(e)}
+                          onBlur={e=>blurHandler(e)}
                           onChange={handleCitezChange}
                         />
                       </Form.Group>
@@ -329,14 +374,17 @@ export const PersDock = () => {
                       >
                         <Form.Label>Серия</Form.Label>
                         <Form.Control
-                          type="number"
-                          name = "password"
+                          type="text"
+                          name = "seria"
                           placeholder="Введите серию паспорта"
                           value={pers.passport?.serial}
-                        //   onBlur={e=>blurHandler(e)}
+                          onBlur={e=>blurHandler(e)}
                           onChange={handleSeriaChange}
+                          pattern="[0-9]{4}"
+                          title="Введите ровно 4 цифры"
                         />
                       </Form.Group>
+                      {(seriaE) && <div style ={{color:'red'}}>{error}</div>}
                       </Col>
                       <Col>
                       <Form.Group
@@ -345,14 +393,17 @@ export const PersDock = () => {
                       >
                         <Form.Label>Номер</Form.Label>
                         <Form.Control
-                          type="number"
-                          name = "password"
+                          type="text"
+                          name = "number"
                           placeholder="Введите номер паспорта"
                           value={pers.passport?.number}
                         //   onBlur={e=>blurHandler(e)}
                           onChange={handleNumberChange}
+                          pattern="[0-9]{6}"
+                          title="Введите ровно 6 цифр"
                         />
                       </Form.Group>
+                      {(numberE) && <div style ={{color:'red'}}>{error}</div>}
                       </Col>
                       </Row>
 

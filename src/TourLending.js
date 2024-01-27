@@ -1,11 +1,8 @@
 import Image from 'react-bootstrap/Image';
 import React, { useState, useEffect,useRef } from "react";
-import { Container, Row, Form, Col, Card, Button, Toast } from "react-bootstrap";
-import Header from "./components/Header";
+import { Container, Row, Form, Col, Card, Button} from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
-import Overlay from 'react-bootstrap/Overlay';
-import Popover from 'react-bootstrap/Popover';
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -88,7 +85,7 @@ export const TourLending = () => {
         if(selectedDate !== null && selectedPersons.length > 0){
             localStorage.setItem("conf_info", JSON.stringify(requestData));
             console.log("Запрос:", localStorage.getItem("conf_info"));
-            window.location.replace(`/api/trip`);
+            window.location.href = `/api/trip`;
         }else{
             toast("Выберите туристов и дату", { autoClose: 4000 });
         }
@@ -113,7 +110,7 @@ export const TourLending = () => {
       const handleDateClick = (index) => {
         const updatedDates = tourinfo.tour.date.map((type, i) => ({
           ...type,
-          checked: i === index, // Устанавливаем состояние checked для выбранной строчки
+          checked: i === index, 
         }));
       
         setTour({
@@ -184,7 +181,7 @@ export const TourLending = () => {
                                 style={{ backgroundColor: "#B8CBE9", borderColor: "#B8CBE9", marginBottom: "20px" }}
                             >
                                 <h1 className="text-center" style={{ fontSize: "24px", marginTop: "1rem",marginBottom:"1rem" }}>{tourinfo.tour?.name}</h1>
-                                <h1 className="text-center" style={{ fontSize: "24px", marginTop: "1rem",marginBottom:"1rem" }}>Город:<br/>{tourinfo.tour?.city}</h1>
+                                <h1 className="text-center" style={{ fontSize: "24px", marginTop: "1rem",marginBottom:"1rem" }}>{tourinfo.tour?.country}, {tourinfo.tour?.city}</h1>
                                 <h1 className="text-center" style={{ fontSize: "24px", marginTop: "1rem",marginBottom:"1rem" }}>Тип тура:<br/>{tourinfo.tour?.tour_type}</h1>
                                 <h1 className="text-center" style={{ fontSize: "24px", marginTop: "1rem",marginBottom:"1rem" }}>Описание тура:<br/>{tourinfo.tour?.description}</h1>
                                 <div className="mb-2">
@@ -220,37 +217,43 @@ export const TourLending = () => {
                             {(tourinfo.persons?.length === 0) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
                                 Для покупки тура Вам необходимо добавить туристов в личном профиле в разделе "Туристы и Документы"
                             </h1>}
-                            {tourinfo.persons?.map((type) => (
-                            <Form
-                                key={type.token}
-                                className="mb-3"
-                                style={{
-                                fontSize: "30px",
-                                marginTop: "1rem",
-                                }}
-                            >
-                                <Form.Check
-                                type="checkbox"
-                                id={type.token}
-                                label={type.fullname}
-                                checked={selectedPersons.some(
-                                    (person) => person.token === type.token
-                                )}
-                                onChange={(e) =>
-                                    handlePersChange(e, type.token, type.fullname)
-                                }
-                                style={{
-                                    backgroundColor: "#DDDFEB",
-                                    borderColor: "#DDDFEB",
-                                    fontSize: "24px",
-                                    padding: "10px",
-                                    position: "relative",
-                                    paddingLeft: "40px",
-                                    borderRadius: "10px",
-                                }}
-                                />
-                            </Form>
-                            ))}
+                            {tourinfo?.persons && tourinfo.persons?.some(person => person.fullname === null) ? (
+                            <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
+                                Для покупки тура Вам необходимо отредактировать имена туристов в личном профиле в разделе "Туристы и Документы"
+                            </h1>
+                        ) : (
+                            tourinfo.persons?.map((type) => (
+                                <Form
+                                    key={type.token}
+                                    className="mb-3"
+                                    style={{
+                                        fontSize: "30px",
+                                        marginTop: "1rem",
+                                    }}
+                                >
+                                    <Form.Check
+                                        type="checkbox"
+                                        id={type.token}
+                                        label={type.fullname}
+                                        checked={selectedPersons.some(
+                                            (person) => person.token === type.token
+                                        )}
+                                        onChange={(e) =>
+                                            handlePersChange(e, type.token, type.fullname)
+                                        }
+                                        style={{
+                                            backgroundColor: "#DDDFEB",
+                                            borderColor: "#DDDFEB",
+                                            fontSize: "24px",
+                                            padding: "10px",
+                                            position: "relative",
+                                            paddingLeft: "40px",
+                                            borderRadius: "10px",
+                                        }}
+                                    />
+                                </Form>
+                            ))
+                        )}
                         </h1>
                         </div>
                     </div>

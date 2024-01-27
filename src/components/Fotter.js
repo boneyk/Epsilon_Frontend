@@ -5,7 +5,7 @@ const Footer = () => (
   <>
   <Container style={{ borderTop: '1px solid black' }} >
     <Row xs="auto" className="justify-content-center mt-4" style={{ paddingBottom: '1rem' }}>
-      <h1 style={{ fontSize: '18px', background: "#E9DDDD" }} className="text-center">
+      <h1 style={{ fontSize: '18px', background: "#E9DDDD",padding:'5px' }} className="text-center">
         Новое турагентство с широким выбором туров по всему миру. Мы создаем незабываемый опыт<br /> для наших клиентов, предлагая различные виды туров - от экскурсий до пляжного отдыха.<br /> Найдите идеальный вариант для вашего отпуска с нами!
       </h1>
     </Row>
@@ -27,7 +27,7 @@ const Footer = () => (
     </Container>
       <Container>
         <Container >
-            <h1 style={{ fontSize: '18px', background: "#E9DDDD" }} className="text-center">
+            <h1 style={{ fontSize: '18px', background: "#E9DDDD",padding:'5px' }} className="text-center">
               helpYou@gmail.com
             </h1>
             <h1 style={{ fontSize: '15px'}} >Служба поддержки</h1>

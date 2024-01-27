@@ -176,7 +176,7 @@ export const ManagerFree = () => {
       </Row>      
       ))} 
       <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Менеджер • Список свободных туров</h2>
-      {/* {(docs.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туристов</div>} */}
+      {(info?.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока у менеджера нет доступных для кураторства туров</div>}
         {info?.map((tour, index2) => (
         <Row style={{ justifyContent: "center", alignItems: "center",marginTop:'1rem' }}>
         <Col xs="auto" style={{ paddingBottom: '1rem' }} 

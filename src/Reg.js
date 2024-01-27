@@ -21,14 +21,15 @@ export const Reg = () => {
   const [formValid, setFormValid] = useState(false);
   const [success, setSuccess] = useState(false);
   const [successError, setSuccessError] = useState("Такой пользователь уже существует");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   useEffect(() => {
-    if (!loginDirty && !passwordDirty && !emailDirty && !confpasswordDirty) {
+    if (!loginDirty && !passwordDirty && !emailDirty && !confpasswordDirty && passwordsMatch) {
       setFormValid(true);
     } else {
       setFormValid(false);
     }
-  }, [loginDirty, passwordDirty, emailDirty,confpasswordDirty]);
+  }, [loginDirty, passwordDirty, emailDirty,confpasswordDirty,passwordsMatch]);
 
   const handleLoginChange = (event) => {
     setLogin(event.target.value); // обновляем состояние при изменении значения в поле ввода логина
@@ -38,9 +39,11 @@ export const Reg = () => {
   };
   const handlePasswordChange = (event) => {
     setPassword(event.target.value); // обновляем состояние при изменении значения в поле ввода пароля
+    setPasswordsMatch(event.target.value === confpassword);
   };
   const handleConfpasswordChange = (event) => {
     setConfassword(event.target.value); // обновляем состояние при изменении значения в поле ввода пароля
+    setPasswordsMatch(event.target.value === password);
   };
 
   const blurHandler = (e) => {
@@ -148,6 +151,7 @@ export const Reg = () => {
                       </Form.Group>
 
                       {(passwordDirty) && <div style ={{color:'red'}}>{passwordError}</div>}
+                      {(passwordsMatch === false) && <div style={{ color: 'red' }}>Пароли не совпадают</div>}
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"

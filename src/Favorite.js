@@ -33,7 +33,7 @@ export const Favorite = () => {
 
   const handleCardClick = (tour) => {
     localStorage.setItem("tour_id", tour.id);
-    window.location.replace(`/api/tours/${tour.id}`);
+    window.location.href = `/api/tours/${tour.id}`;
   };
 
   const handleDel = (tour) => {

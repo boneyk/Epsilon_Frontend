@@ -47,12 +47,12 @@ export const Tours = () => {
 
   const handleCardClick = (tour) => {
     // (token === null) ? setStatus(false) : setStatus(true);
-    console.log("Статус и токен:", status,);
-    if(status === false){
+    const token = localStorage.getItem("token");
+    if(token === "null"){
       toast("Войдите в личный кабинет, чтобы продолжить", { autoClose: 4000 });
     }else{
       localStorage.setItem("tour_id", tour.id);
-      window.location.replace(`/api/tours/${tour.id}`);
+      window.location.href = `/api/tours/${tour.id}`;
     }
   };
   const handleSubmit = (e) => {
@@ -115,10 +115,15 @@ export const Tours = () => {
               <InputGroup className="mb-3 mt-3" style={{ maxWidth: '14rem' }}>
                 <InputGroup.Text id="basic-addon1">Ночи:</InputGroup.Text>
                 <Form.Control
-                  type="number"
-                  value={nights}
-                  onChange={(e) => setNights(e.target.value)}
-                />
+                type="number"
+                value={nights}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (/^\d*$/.test(input)) {  // Проверка на положительное целое число
+                    setNights(input);
+                  }
+                }}
+              />
               </InputGroup>
             </Col>
 
@@ -128,7 +133,12 @@ export const Tours = () => {
                 <Form.Control
                   type="number"
                   value={tourists}
-                  onChange={(e) => setTourists(e.target.value)}
+                  onChange={(e) =>{
+                    const input = e.target.value;
+                    if (/^\d*$/.test(input)) {  // Проверка на положительное целое число
+                      setTourists(input);
+                    }
+                  }}
                 />
               </InputGroup>
             </Col>

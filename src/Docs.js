@@ -47,7 +47,7 @@ export const Docs = () => {
   };
   const handleToClick = (tour) => {
     localStorage.setItem("doc_token",tour.token)
-    window.location.replace(`/api/documents/person?doc_token=${tour.token}`);
+    window.location.href = `/api/documents/person?doc_token=${tour.token}`;
   };
   const handleAddClick = (tour) => {
     axios
@@ -96,7 +96,7 @@ export const Docs = () => {
         </Link>
 
       {(docs.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туристов</div>}
-        {docs.map((docs, index) => (
+        {docs?.map((docs, index) => (
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
         <Col xs="auto" style={{ paddingBottom: '1rem' }} key={index} md={8} lg={6}>
           <Card className="shadow px-4">
@@ -122,7 +122,7 @@ export const Docs = () => {
               onClick={() => handleToClick(docs)}
             >
               <div style={{ display: "flex", alignItems: "center" }}>
-                {(docs.fullname === null) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
+                {(docs?.fullname === null) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
                   Нажмите, чтобы заполнить
                 </h1>}
                 <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>

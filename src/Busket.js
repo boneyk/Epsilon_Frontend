@@ -42,7 +42,7 @@ export const Busket = () => {
     // Преобразование в строку и сохранение в localStorage
       localStorage.setItem("conf_info", JSON.stringify(requestData));
       console.log("Запрос:", localStorage.getItem("conf_info"));
-      window.location.replace(`/api/trip/conf`);  
+      window.location.href = `/api/trip/conf`;  
   };
 
   return (
