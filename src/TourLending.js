@@ -168,7 +168,7 @@ export const TourLending = () => {
                         <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить в избранное</h1> 
                         <img
                             src="/img/edit_ico.png"
-                            width="20"
+                            width="30"
                             height="30"
                             alt="Иконка редактирования"
                         />

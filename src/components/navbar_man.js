@@ -34,17 +34,24 @@ export default function Navbar_man() {
                     </div>
                 </Link>
                 </Nav.Link>
+                <Nav.Link eventKey="profile">
+                <Link to="/api/manager/free" style={{ textDecoration: 'none' }}>
+                    <div className="navtext">
+                    <div>Кураторство</div>
+                    </div>
+                </Link>
+                </Nav.Link>
             <Nav.Link eventKey="favorite">
-                <Link to="/" style={{ textDecoration: 'none' }}>
+                <Link to="/api/manager/info" style={{ textDecoration: 'none' }}>
                   <div style={{ textAlign: "center" }} className="navtext">
                     <img
-                      src="/img/home.png"
+                      src="/img/profile.png"
                       width="40"
                       height="40"
                       className="d-inline-block align-top"
                       alt="Home icon"
                     />
-                    <div>Выйти</div>
+                    <div>Профиль</div>
                   </div>
                 </Link>
               </Nav.Link>

@@ -8,51 +8,58 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar_man from './components/navbar_man';
 
-
+function formatPrice(number) {
+  // Преобразование числа в строку и добавление разделителей для тысяч
+  if (typeof number !== 'undefined' && !isNaN(number)) {
+    // Преобразование числа в строку и добавление разделителей для тысяч
+    let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+    return priceString;
+  }
+}
 
 export const MangerEdit = () => {
-  const [docs, setDocs] = useState([]);
+  const [tours, setTours] = useState([]);
   const token = localStorage.getItem("token");
   let tour_id = localStorage.getItem("tour_id");
   console.log("токен из хранилища:", token);
   
 
-//   useEffect(() => {
-//     axios.get(`/api/documents?token=${token}`)
-//       .then((response) => {
-//         // Обработка успешного ответа
-//         console.log("Ответ сервера:", response.data);
-//         setDocs(response.data);
-//       })
-//       .catch((error) => {
-//         // Обработка ошибки
-//         console.error("Ошибка запроса:", error);
-//       });
-//   }, [token]); // Добавляем token в зависимости useEffect
+  useEffect(() => {
+    axios.get(`/api/tours`)
+      .then((response) => {
+        // Обработка успешного ответа
+        console.log("Ответ сервера:", response.data);
+        setTours(response.data);
+      })
+      .catch((error) => {
+        // Обработка ошибки
+        console.error("Ошибка запроса:", error);
+      });
+  }, []); // Добавляем token в зависимости useEffect
 
 //   const handleCardClick = (tour) => {
 //     localStorage.setItem("tour_id", tour.id);
 //     window.location.replace(`/api/tours/${tour.id}`);
 //   };
 
-  const handleDel = (tour) => {
-    axios
-      .delete(`/api/documents?token=${token}&doc_token=${tour.token}`)
-      .then((response) => {
-        // Обработка успешного ответа
-        console.log("Ответ сервера:", response.data);
-        setDocs(docs.filter(item => item.token !== tour.token));
-      })
-      .catch((error) => {
-        // Обработка ошибки
-        console.error("Ошибка запроса:", error);
-      });
-  };
+  // const handleDel = (tour) => {
+  //   axios
+  //     .delete(`/api/documents?token=${token}&doc_token=${tour.token}`)
+  //     .then((response) => {
+  //       // Обработка успешного ответа
+  //       console.log("Ответ сервера:", response.data);
+  //       setDocs(docs.filter(item => item.token !== tour.token));
+  //     })
+  //     .catch((error) => {
+  //       // Обработка ошибки
+  //       console.error("Ошибка запроса:", error);
+  //     });
+  // };
   const handleToClick = (tour) => {
-    localStorage.setItem("doc_token",tour.token)
-    window.location.replace(`/api/documents/person?doc_token=${tour.token}`);
+    localStorage.setItem("tour_id",tour.id)
   };
   const handleAddClick = () => {
+    localStorage.setItem("tour_id",0)
     // axios
     //   .post(`/api/documents/add?token=${token}`)
     //   .then((response) => {
@@ -69,7 +76,6 @@ export const MangerEdit = () => {
     //       toast("Войдите в личный кабинет, чтобы продолжить", { autoClose: 4000 });
     //     }
     //   }); 
-    window.location.replace(`api/manager/add`);
   };
   
 
@@ -81,7 +87,7 @@ export const MangerEdit = () => {
       <Container></Container>
       <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Менеджер • Список актуальных туров</h2>
       <Link
-        // onClick={() => handleAddClick()}
+        onClick={() => handleAddClick()}
         to="/api/manager/add"
         style={{
             textDecoration: "none",
@@ -94,17 +100,17 @@ export const MangerEdit = () => {
         <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить новый тур</h1> {/* Заменяем marginLeft на marginRight */}
         <img
             src="/img/edit_ico.png"
-            width="20"
+            width="30"
             height="30"
             alt="Иконка редактирования"
         />
         </Link>
 
-      {/* {(docs.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туристов</div>} */}
-        {/* {docs.map((docs, index) => ( */}
+      {(tours?.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туров</div>}
+        {tours?.map((info, index) => (
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
         <Col xs="auto" style={{ paddingBottom: '1rem' }} 
-        // key={index} 
+        key={index} 
         md={8} lg={6}>
           <Card className="shadow px-4" style={{background: "#DDDFEB"}}>
             <div style={{
@@ -126,21 +132,17 @@ export const MangerEdit = () => {
                 marginTop: "10px",
                 marginBottom: "10px"
               }}
-            //   onClick={() => handleToClick(docs)}
-            >
+              to="/api/manager/add"
+              onClick={() => handleToClick(info)}>
               <div style={{ alignItems: "center" }}>
-                {/* {(docs.fullname === null) && <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
-                  Нажмите, чтобы заполнить
-                </h1>} */}
                 <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
-                Манящий город Калининград!
-                  {/* {docs.fullname} */}
+                  {info?.name}
                 </h1>
                 <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
-                Путешествие по России
+                {info?.tour_type}
                 </h1>
                 <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
-                Стоимость: 74 000 ₽ 
+                Стоимость: {formatPrice(info?.price_per_one)} ₽ 
                 </h1>
               </div>
               </Link>
@@ -174,8 +176,9 @@ export const MangerEdit = () => {
                   marginTop: "10px",
                   marginBottom: "10px"
                 }}
-                // onClick={() => handleToClick(docs)}
-              >
+                to="/api/manager/add"
+                onClick={() => handleToClick(info)}
+                >
                 <img
                   src="/img/path_to.png"
                   width="50"
@@ -188,7 +191,7 @@ export const MangerEdit = () => {
           </Card>
         </Col>
       </Row>      
-        {/* ))} */}
+    ))} 
     </Container>
   </>
   );

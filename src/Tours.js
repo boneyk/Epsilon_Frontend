@@ -9,10 +9,11 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 function formatPrice(number) {
   // Преобразование числа в строку и добавление разделителей для тысяч
-  let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
-
-  // Добавление знака валюты
-  return priceString;
+  if (typeof number !== 'undefined' && !isNaN(number)) {
+    // Преобразование числа в строку и добавление разделителей для тысяч
+    let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
+    return priceString;
+  }
 }
 
 export const Tours = () => {

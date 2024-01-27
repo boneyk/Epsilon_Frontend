@@ -71,10 +71,19 @@ const blurHandler = (e) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
         if (response.status === 200){ 
+          if(response.data.role === "MANAGER"){
+            window.location.href = '/api/manager/tours';
+            localStorage.setItem("token", response.data.token);
+            const token = localStorage.getItem("token");
+            console.log("токен из хранилища:", token);
+          }else if(response.data.role === "ADMIN"){
+            window.location.href = '/api/admin/';
+          }else{
           window.location.href = '/api/tours';
           localStorage.setItem("token", response.data.token);
           const token = localStorage.getItem("token");
           console.log("токен из хранилища:", token);
+          }
         }
       })
       .catch((error) => {

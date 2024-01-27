@@ -244,27 +244,6 @@ export const PersDock = () => {
                     </div>
                 </Card>
             </Col>
-            <Col>
-            <Link
-                // onClick={() => handleAddClick()}
-                style={{
-                    textDecoration: "none",
-                    color: "black",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end", // Добавляем свойство для выравнивания по правому краю
-                }}
-                onClick={handleShow}
-                >
-                <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить <br/>документ</h1> {/* Заменяем marginLeft на marginRight */}
-                <img
-                    src="/img/edit_ico.png"
-                    width="20"
-                    height="30"
-                    alt="Иконка редактирования"
-                />
-            </Link>
-            </Col>
             </Row>
 
 

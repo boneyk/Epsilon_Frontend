@@ -19,6 +19,8 @@ import { SeeConf } from "./SeeConf";
 import { ManagerMain } from "./ManagerMain";
 import { MangerEdit } from "./ManagerEdit";
 import { ManagerAdd } from "./ManagerAdd";
+import { ManagerFree } from "./ManagerFree";
+import { ManagerProf } from "./ManagerProf";
 
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
       <Route path="api/manager/tours" element={<ManagerMain/>} />
       <Route path="api/manager/edit" element={<MangerEdit/>} />
       <Route path="api/manager/add" element={<ManagerAdd/>} />
+      <Route path="api/manager/free" element={<ManagerFree/>} />
+      <Route path="api/manager/info" element={<ManagerProf/>} />
       </Routes>
       </Router>
       <Fotter/>

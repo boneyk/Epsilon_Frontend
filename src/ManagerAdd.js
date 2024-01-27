@@ -23,30 +23,27 @@ function formatPrice(number) {
 
 
 export const ManagerAdd = () => {
-    const info = JSON.parse(localStorage.getItem("conf_info"));
-console.log("Запрос:", info);
-const [confinfo, setInfo] = useState([]);
+const [tour, setInfo] = useState([]);
+const tour_id = localStorage.getItem("tour_id");
+const token = localStorage.getItem("token");
 
-// useEffect(() => {
-//   axios
-//     .post("/api/trip",info,{
-//       headers: {
-//         "Access-Control-Allow-Origin": "*",
-//         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-//       },
-//     }).then((response) => {
-//       console.log("Ответ сервера:", response.data);
-//       setInfo(response.data);
-//     })
-//     .catch((error) => {
-//       console.error("Ошибка запроса:", error);
-//     });
-// }, []);
 
-const handleToClick = (tour) => {
-  localStorage.setItem("doc_token",tour.token)
-  window.location.replace(`/api/documents/person?doc_token=${tour.token}`);
-};
+useEffect(() => {
+  console.log("Запрос:", tour_id);
+  axios
+    .get(`/api/tours/${tour_id}?token=${token}`,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }).then((response) => {
+      console.log("Ответ сервера:", response.data);
+      setInfo(response.data);
+    })
+    .catch((error) => {
+      console.error("Ошибка запроса:", error);
+    });
+}, []);
 
 const [photos, setPhotos] = useState([]);
 
@@ -59,7 +56,7 @@ const handleAddPhoto = (event) => {
       <Navbar_man />
       <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
         <Container></Container>
-        <h2 style={{ paddingLeft: '3rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Подтверждение заказа</h2>
+        <h2 style={{ paddingLeft: '3rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Менеджер • Редактирование тура</h2>
       <Row style={{justifyContent: "center", alignItems: "center"}}>
         <Col xs="auto" className="p-0" md={8} lg={8}>
         <Card
@@ -73,8 +70,7 @@ const handleAddPhoto = (event) => {
           <Form.Label>Название тура:</Form.Label>
           <Form.Control
             type="text"
-            value="Манящий город Калининград!"
-            readOnly
+            value={tour?.tour?.name}
           />
         </Form.Group>
         <Row>
@@ -83,8 +79,7 @@ const handleAddPhoto = (event) => {
               <Form.Label>Страна:</Form.Label>
               <Form.Control
                 type="text"
-                value={confinfo.tour?.country}
-                readOnly
+                value={tour?.tour?.country}
               />
             </Form.Group>
           </Col>
@@ -93,8 +88,7 @@ const handleAddPhoto = (event) => {
               <Form.Label>Город:</Form.Label>
               <Form.Control
                 type="text"
-                value={confinfo.tour?.city}
-                readOnly
+                value={tour?.tour?.city}
               />
             </Form.Group>
           </Col>
@@ -103,28 +97,25 @@ const handleAddPhoto = (event) => {
           <Form.Label>Тип тура:</Form.Label>
           <Form.Control
             type="text"
-            value={confinfo.date?.dateStart}
-            readOnly
+            value={tour?.tour?.tour_type}
           />
         </Form.Group>
         <Row>
           <Col>
             <Form.Group>
-              <Form.Label>Стоимость:</Form.Label>
+              <Form.Label>Стоимость(руб.):</Form.Label>
               <Form.Control
                 type="text"
-                value={confinfo.tour?.country}
-                readOnly
+                value={tour?.tour?.price_per_one}
               />
             </Form.Group>
           </Col>
           <Col>
             <Form.Group>
-              <Form.Label>Вместительность:</Form.Label>
+              <Form.Label>Вместительность(чел.):</Form.Label>
               <Form.Control
                 type="text"
-                value={confinfo.tour?.city}
-                readOnly
+                value={tour?.tour?.capacity}
               />
             </Form.Group>
           </Col>
@@ -133,18 +124,27 @@ const handleAddPhoto = (event) => {
           <Form.Label>Описание тура:</Form.Label>
           <Form.Control
             as="textarea"
-            value={confinfo.tour?.description}
+            value={tour?.tour?.description}
             readOnly
           />
         </Form.Group>
-        <Row>
+        {tour?.tour?.date?.map((date, index) => (
+        <Row key={index}>
           <Col>
             <Form.Group>
               <Form.Label>Дата начала:</Form.Label>
               <Form.Control
                 type="text"
-                value={confinfo.tour?.country}
-                readOnly
+                value={date.dateStart}
+                // onChange={(e) => {
+                //   const newDate = { ...date, dateStart: e.target.value };
+                //   const newDates = [...tour.date];
+                //   newDates[index] = newDate;
+                //   setTour((prevTour) => ({
+                //     ...prevTour,
+                //     date: newDates,
+                //   }));
+                // }}
               />
             </Form.Group>
           </Col>
@@ -153,16 +153,25 @@ const handleAddPhoto = (event) => {
               <Form.Label>Дата конца:</Form.Label>
               <Form.Control
                 type="text"
-                value={confinfo.tour?.city}
-                readOnly
+                value={date.dateEnd}
+                // onChange={(e) => {
+                //   const newDate = { ...date, dateEnd: e.target.value };
+                //   const newDates = [...tour.date];
+                //   newDates[index] = newDate;
+                //   setTour((prevTour) => ({
+                //     ...prevTour,
+                //     date: newDates,
+                //   }));
+                // }}
               />
             </Form.Group>
           </Col>
         </Row>
+      ))}
+
         <Row>
         <Link
         // onClick={() => handleAddClick()}
-        to="/api/manager/add"
         style={{
             textDecoration: "none",
             color: "black",
@@ -172,10 +181,10 @@ const handleAddPhoto = (event) => {
             marginTop:'1rem'
         }}
         >
-        <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить дату</h1> {/* Заменяем marginLeft на marginRight */}
+        <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить дату</h1>
         <img
             src="/img/edit_ico.png"
-            width="20"
+            width="30"
             height="30"
             alt="Иконка редактирования"
         />
@@ -190,7 +199,7 @@ const handleAddPhoto = (event) => {
                         Отменить
                         </Button>{' '}
                         <Button variant="secondary">
-                        Редактировать
+                        Изменить
                         </Button>
                     </div>
         </Row>
@@ -212,7 +221,7 @@ const handleAddPhoto = (event) => {
         <Col md={6}>
             <Card.Title>Добавленные фотографии</Card.Title>
             <ListGroup>
-              {/* {photos.map((photo, index) => ( */}
+              {tour?.tour?.images?.map((photo, index) => (
                 <Card.Text className="text-center" style={{background:"#F3F6FB",borderRadius: "10px",textDecoration: "none",
                 color: "black",
                 display: "flex",
@@ -220,17 +229,25 @@ const handleAddPhoto = (event) => {
                 justifyContent: "space-between",
                 marginTop: "10px",
                 marginBottom: "10px"}} inline>
-                    <h1 style={{ fontSize: "17px",padding:'1rem'}}>ldskldfls</h1>
-                {/* {confinfo.fullname} */}
+                    <h1 style={{ fontSize: "17px",padding:'1rem'}}>{photo.filename}</h1>
+              <div style={{justifyContent: "space-end"}}>
+                <img
+              src={`/img/${photo.filename}.png`}
+              width="40"
+              height="40"
+              alt="Photo icon"
+              style={{marginRight:'1rem'}}
+            />
                 <img
                   src="/img/del_ico.png"
                   width="40"
                   height="30"
-                  alt="Basket icon"
+                  alt="TO icon"
                   style={{marginRight:'1rem'}}
                 />
+                </div>
             </Card.Text>
-              {/* ))} */}
+            ))}
             </ListGroup>
           </Col>
           <Col md={6}>
