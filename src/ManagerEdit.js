@@ -86,7 +86,7 @@ export const MangerEdit = () => {
     <ToastContainer />
       <Container></Container>
       <h2 style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Менеджер • Список актуальных туров</h2>
-      <Link
+      {/* <Link
         onClick={() => handleAddClick()}
         to="/api/manager/add"
         style={{
@@ -104,7 +104,7 @@ export const MangerEdit = () => {
             height="30"
             alt="Иконка редактирования"
         />
-        </Link>
+        </Link> */}
 
       {(tours?.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туров</div>}
         {tours?.map((info, index) => (
