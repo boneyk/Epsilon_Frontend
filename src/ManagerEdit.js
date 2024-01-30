@@ -98,13 +98,13 @@ export const MangerEdit = () => {
         }}
         >
         <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить новый тур</h1> {/* Заменяем marginLeft на marginRight */}
-        <img
+        {/* <img
             src="/img/edit_ico.png"
             width="30"
             height="30"
             alt="Иконка редактирования"
         />
-        </Link> */}
+        </Link> */} 
 
       {(tours?.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туров</div>}
         {tours?.map((info, index) => (
