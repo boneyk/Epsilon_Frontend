@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card,Button,Form,Navbar, Tab,Tabs,Spinner  } from "react-bootstrap";
+import { Container, Row, Col, Card,Button,Form,Navbar, Tab,Tabs,Spinner,Placeholder  } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
@@ -56,7 +56,7 @@ export const Tours = () => {
     const urls = [];
     for (const tour of toursData) {
       const imageName = tour.images[0].filename;
-      const imagesListRef = ref(storage, 'img/tour_icons');
+      const imagesListRef = ref(storage, 'img');
       try {
         const response = await listAll(imagesListRef);
         for (const item of response.items) {
@@ -189,27 +189,30 @@ export const Tours = () => {
       <ToastContainer />
         <Container></Container>
         {/* <h2 style={{ paddingLeft: '6rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Наши туры:</h2> */}
-        {imageUrls.length === 0 ? (
-          <Row style={{justifyContent: "center", alignItems: "center",marginTop:"4rem",marginBottom:"4rem"}}>
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </Spinner></Row>
-        ) : (
-          <Row style={{justifyContent: "center", alignItems: "center"}}>
-            {tours?.map((tour, index) => (
-              <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-                <Card style={{ width: '18rem',background:'#DDDFEB',borderRadius:'3rem' }} onClick={() => handleCardClick(tour)}>
-                  <Card.Img src={imageUrls[index]} />
-                  <Card.Body>
-                    <Card.Title>{tour.name}</Card.Title>
-                    <Card.Text>{tour.tour_type}</Card.Text>
-                    <Card.Text style={{marginLeft:'10px'}}>Стоимость: {formatPrice(tour.price_per_one)} ₽</Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        )}
+        <Row style={{ justifyContent: "center", alignItems: "center" }}>
+          {tours?.map((tour, index) => (
+            <Col xs="auto" style={{ paddingBottom: '1rem' }} key={index}>
+              <Card style={{ width: '18rem', background: '#DDDFEB', borderRadius: '3rem' }} onClick={() => handleCardClick(tour)}>
+                {imageUrls.length === 0 ? (
+                  <Placeholder as={Card.Title} animation="glow">
+                  <Placeholder xs={12} style={{borderRadius:'3rem',height:"17rem"}}/>
+                </Placeholder>
+                ) : (
+                  <div style={{ position: 'relative' }}>
+                    <Card.Img src={imageUrls[index]} />
+                  </div>
+                )}
+                <Card.Body>
+                  <Card.Title>{tour.name}</Card.Title>
+                  <Card.Text>{tour.tour_type}</Card.Text>
+                  <Card.Text style={{ marginLeft: '10px' }}>Стоимость: {formatPrice(tour.price_per_one)} ₽</Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+
+
       </Container>
     </>
   );

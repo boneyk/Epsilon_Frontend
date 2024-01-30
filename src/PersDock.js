@@ -243,6 +243,50 @@ export const PersDock = () => {
       toast("Неправильно введены данные паспорта", { autoClose: 4000 });
     }
     };
+
+    const handleDelPass = (event) => {
+      axios.delete(`/api/documents/passport?doc_token=${doc_token}`)
+          .then((response) => {
+            // Обработка успешного ответа
+            console.log("Ответ сервера:", response.data);
+            setFio("");
+            setSex("");
+            setCitez("");
+            setSeria("");
+            setNumber("");
+            setDateG("");
+            setWhoG("");
+            setReg("");
+            setDateB("");
+            toast("Паспорт успешно удален", { autoClose: 4000 });
+          })
+          .catch((error) => {
+            // Обработка ошибки
+            console.error("Ошибка запроса:", error);
+          });
+    };
+
+    const handleEditPass = (event) => {
+      axios.delete(`/api/documents/passport?doc_token=${doc_token}`)
+          .then((response) => {
+            // Обработка успешного ответа
+            console.log("Ответ сервера:", response.data);
+            setFio("");
+            setSex("");
+            setCitez("");
+            setSeria("");
+            setNumber("");
+            setDateG("");
+            setWhoG("");
+            setReg("");
+            setDateB("");
+            toast("Паспорт успешно удален", { autoClose: 4000 });
+          })
+          .catch((error) => {
+            // Обработка ошибки
+            console.error("Ошибка запроса:", error);
+          });
+    };
     
 
     return (
@@ -457,19 +501,28 @@ export const PersDock = () => {
                       </Form.Group>
 
 
-                      {role === "USER" && (<div className="mb-2"> 
-                        <Button variant="primary" 
-                        onClick={handleSubmitPass}
-                        >
-                        Сохранить
-                        </Button>{' '}
-                        <Button variant="secondary">
-                        Отменить
-                        </Button>{' '}
-                        <Button variant="secondary">
-                        Редактировать
-                        </Button>
-                    </div> )}
+                      {role === "USER" && (
+                        <div className="mb-2">
+                          {pers.passport !== null ? (
+                            <>
+                              <Button variant="primary" onClick={handleEditPass}>
+                                Изменить
+                              </Button>{' '}
+                              <Button variant="secondary" onClick={handleDelPass}>
+                                Удалить
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Button variant="primary" onClick={handleSubmitPass}>
+                                Сохранить
+                              </Button>{' '}
+                            </>
+                          )}
+                          
+                        </div>
+                      )}
+
                     </Form>
             </Card.Body>
             </Card>

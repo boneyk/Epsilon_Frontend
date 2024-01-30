@@ -118,9 +118,9 @@ export const ManagerMain = () => {
                 <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
                 Стоимость: {formatPrice(tour?.price)} ₽ 
                 </h1>
-                {/* <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
-                Статус заказа: {status} 
-                </h1> */}
+                <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
+                Статус заказа: {tour?.status} 
+                </h1>
               </div>
               </Link>
               </div>

@@ -95,7 +95,7 @@ export const Docs = () => {
         />
         </Link>
 
-      {(docs.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px'  }}>Пока в документах нет доступных туристов</div>}
+      {(docs.length === 0) && <div style={{justifyContent: "center", alignItems: "center",fontSize:'25px',marginTop:"1rem",marginBottom:"18rem"  }}>Пока в документах нет доступных туристов</div>}
         {docs?.map((docs, index) => (
         <Row style={{ justifyContent: "center", alignItems: "center" }}>
         <Col xs="auto" style={{ paddingBottom: '1rem' }} key={index} md={8} lg={6}>

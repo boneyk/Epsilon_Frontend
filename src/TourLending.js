@@ -1,11 +1,14 @@
 import Image from 'react-bootstrap/Image';
 import React, { useState, useEffect,useRef } from "react";
-import { Container, Row, Form, Col, Card, Button} from "react-bootstrap";
+import { Container, Row, Form, Col, Card, Button, Spinner} from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getDownloadURL, ref, listAll,
+    list } from 'firebase/storage';
+    import { storage } from "./firebase";
 
 function formatPrice(number) {
     // Проверка, является ли number числом
@@ -27,28 +30,44 @@ export const TourLending = () => {
     const token = localStorage.getItem("token");
     console.log("tour_id из хранилища:", tour_id);
     console.log("токен из хранилища:", token);
-  
-  const ref = useRef(null);
+    const [imageUrls, setImageUrls] = useState([]);
     
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`/api/tours/${tour_id}?token=${token}`, {
-                    headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-                    },
-                });
-                console.log("Ответ сервера:", response.data);
-                setTour(response.data);
-            } catch (error) {
-                console.error("Ошибка запроса:", error);
-            }
-        };
+      axios.get(`/api/tours/${tour_id}?token=${token}`)
+      .then((response) => {
+        // Обработка успешного ответа
+        console.log("Ответ сервера:", response.data);
+        setTour(response.data);
+        loadImages(response.data); // Вызов функции для загрузки изображений
+      })
+      .catch((error) => {
+        // Обработка ошибки
+        console.error("Ошибка запроса:", error);
+      });
 
-        fetchData();
-    }, [setTour]);
+    }, []); 
+    const loadImages = async (toursData) => {
+        const urls = [];
+        for (const image of toursData.tour.images) {
+          const imageName = image.filename;
+          const imagesListRef = ref(storage, 'img');
+          try {
+            const response = await listAll(imagesListRef);
+            for (const item of response.items) {
+              if (item.name === `${imageName}.png`) {
+                const url = await getDownloadURL(item);
+                console.log("Картинка:", url);
+                urls.push(url);
+              }
+            }
+          } catch (error) {
+            console.error('Ошибка при загрузке изображения', error);
+          }
+        }
+        console.log("Картинки:", urls);
+        setImageUrls(urls);
+      };
 
     const handleAdd = (event) => {
         event.preventDefault();
@@ -149,11 +168,16 @@ export const TourLending = () => {
     return (
         <div>
         <Navibar />
-            {/* <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid className="d-flex justify-content-center align-items-center"/> */}
+        {imageUrls.length === 0 ? (
+          <Row style={{justifyContent: "center", alignItems: "center",marginTop:"13rem",marginBottom:"13rem"}}>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner></Row>
+        ) : (
             <Container className="d-flex justify-content-center align-items-center">
             <ToastContainer />
                 <Row>
-                    <Image src={`/img/${tourinfo.tour?.images[1].filename}.png`} fluid />
+                    <Image src={imageUrls[1]} fluid />
                     <Button
                         onClick={handleAdd}
                         style={{
@@ -195,12 +219,12 @@ export const TourLending = () => {
                         </Col> 
                         <Col xs="auto" className="" md={4} lg={4}>
                         <Col>
-                            <img src={`/img/${tourinfo.tour?.images[2].filename}.png`} style={{ width: "105%", height: "auto", marginRight: "20px", marginBottom: "1rem" }} />
+                            <img src={imageUrls[2]} style={{ width: "105%", height: "auto", marginRight: "20px", marginBottom: "1rem" }} />
                         </Col>
                         <Col>
                             <div style={{ display: "flex" }}>
-                                <img src={`/img/${tourinfo.tour?.images[3].filename}.png`} style={{ width: "50%", height: "auto", marginRight: "20px", marginBottom: "1rem" }} />
-                                <img src={`/img/${tourinfo.tour?.images[4].filename}.png`} style={{ width: "50%", height: "auto", marginBottom: "1rem" }} />
+                                <img src={imageUrls[3]} style={{ width: "50%", height: "auto", marginRight: "20px", marginBottom: "1rem" }} />
+                                <img src={imageUrls[4]} style={{ width: "50%", height: "auto", marginBottom: "1rem" }} />
                             </div>
                         </Col>
                     </Col>
@@ -321,6 +345,7 @@ export const TourLending = () => {
 
                 </Row>
             </Container>
+        )}
         </div>
     );
 };

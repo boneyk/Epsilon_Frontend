@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Form,Col,Card,Button,Toast } from "react-bootstrap";
+import { Container, Row, Form,Col,Card,Button,Toast,Spinner } from "react-bootstrap";
 import axios from "axios";
 import Navibar from "./components/navibar";
 import { Link } from "react-router-dom";
@@ -7,6 +7,9 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Navbar_man from "./components/navbar_man";
+import { getDownloadURL, ref, listAll,uploadBytes,
+  list } from 'firebase/storage';
+  import { storage } from "./firebase";
 
 function formatPrice(number) {
   // Проверка, является ли number числом
@@ -36,6 +39,9 @@ const [capacity, setCapacity] = useState(0);
 const [price, setPrice] = useState(0);
 const [description, setDescription] = useState("");
 
+const [imageUrls, setImageUrls] = useState([]);
+
+
 
 useEffect(() => {
   axios
@@ -55,11 +61,34 @@ useEffect(() => {
       setPrice(response.data.tour.price_per_one);
       setDescription(response.data.tour.description);
       setType(response.data.tour.tour_type);
+      loadImages(response.data); // Вызов функции для загрузки изображений
     })
     .catch((error) => {
       console.error("Ошибка запроса:", error);
     });
 }, []);
+
+const loadImages = async (toursData) => {
+  const urls = [];
+  for (const image of toursData.tour.images) {
+    const imageName = image.filename;
+    const imagesListRef = ref(storage, 'img');
+    try {
+      const response = await listAll(imagesListRef);
+      for (const item of response.items) {
+        if (item.name === `${imageName}.png`) {
+          const url = await getDownloadURL(item);
+          console.log("Картинка:", url);
+          urls.push(url);
+        }
+      }
+    } catch (error) {
+      console.error('Ошибка при загрузке изображения', error);
+    }
+  }
+  console.log("Картинки:", urls);
+  setImageUrls(urls);
+};
 
 const [photos, setPhotos] = useState([]);
 
@@ -102,6 +131,7 @@ const handleSubmit = (event) => {
     "capacity": capacity,
     "price_per_one": price,
     "description": description,
+    "dates": dates
     };
     console.log("Запрос:", requestData);
   axios
@@ -116,9 +146,36 @@ const handleSubmit = (event) => {
       toast("Информация успешно обновлена", { autoClose: 4000 });
     })
     .catch((error) => {
+      toast("Вы не курируете данный тур", { autoClose: 4000 });
+      console.error("Ошибка запроса:", error);
+    });
+    const date_id =localStorage.getItem("date_id");
+    const newDate = {
+      dateStart: "",
+      dateEnd: ""
+    };
+    console.log("Запрос:", newDate);
+    axios
+    .patch(`/api/manager/edit/${tour_id}/date/${date_id}?token=${token}`,requestData,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }).then((response) => {
+      console.log("Ответ сервера:", response.data);
+      setInfo(response.data);
+      toast("Информация успешно обновлена", { autoClose: 4000 });
+      localStorage.setItem("date_id",null);
+    })
+    .catch((error) => {
       console.error("Ошибка запроса:", error);
     });
 };
+
+const handleAddPhoto = (event) => {
+  setImageUpload(event.target.files[0]);
+};
+
 
 const handleAddClick = () => {
   console.log("Массив дат:", dates);
@@ -129,10 +186,66 @@ const handleAddClick = () => {
   setDates((prevDates) => [...prevDates, newDate]);
 };
 
-
-const handleAddPhoto = (event) => {
-  // Логика добавления фотографий
+const handleSaveClick = () => {
+  
 };
+
+const handleDel = (photo) => {
+  axios
+    .delete(`/api/manager/edit/${tour_id}/image/${photo.id}?token=${token}`,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }).then((response) => {
+      console.log("Ответ сервера:", response.data);
+      setInfo(response.data);
+      toast("Информация успешно обновлена", { autoClose: 4000 });
+      localStorage.setItem("date_id",null);
+    })
+    .catch((error) => {
+      toast("Вы не курируете данный тур", { autoClose: 4000 });
+      console.error("Ошибка запроса:", error);
+    });
+};
+
+const [imageUpload, setImageUpload] = useState(null);
+const imagesListRef = ref(storage, "img/");
+  const uploadFile = () => {
+
+    const requestData = {
+      "filename": `${imageUpload.name.split(".")[0]}`,
+      "path": "/images/",
+      "alt": "описание",
+      "size": "1920x1080",
+      "content_type": ".png"
+  }
+  console.log("иМЯ картинки:", requestData);
+
+    axios
+    .post(`/api/manager/edit/${tour_id}/image?token=${token}`,requestData,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }).then((response) => {
+      console.log("Ответ сервера:", response.data);
+      toast("Информация успешно обновлена", { autoClose: 4000 });
+      if (imageUpload == null) return;
+    const imageRef = ref(storage, `img/${imageUpload.name}`);
+    console.log("Картинка отправляется:", imageUpload.name);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageUrls((prev) => [...prev, url]);
+      });
+    });
+    })
+    .catch((error) => {
+      toast("Вы не курируете данный тур", { autoClose: 4000 });
+      console.error("Ошибка запроса:", error);
+    });
+    
+  };
 
   return (
     <>
@@ -231,6 +344,7 @@ const handleAddPhoto = (event) => {
                   const newDates = [...dates];
                   newDates[index] = newDate;
                   setDates(newDates);
+                  localStorage.setItem("date_id",date.id);
                 }}
               />
             </Form.Group>
@@ -246,15 +360,43 @@ const handleAddPhoto = (event) => {
                   const newDates = [...dates];
                   newDates[index] = newDate;
                   setDates(newDates);
+                  localStorage.setItem("date_id",date.id);
                 }}
               />
             </Form.Group>
           </Col>
         </Row>
       ))}
-
-        <Row>
-        <Link
+      <Row style={{
+            textDecoration: "none",
+            color: "black",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-between", // Добавляем свойство для выравнивания по правому краю
+            marginTop:'1rem'
+        }}><Col>
+          <Link
+        onClick={() => handleSaveClick()}
+        style={{
+            textDecoration: "none",
+            color: "black",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end", // Добавляем свойство для выравнивания по правому краю
+            marginTop:'1rem'
+        }}
+        >
+        <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Сохранить дату</h1>
+        <img
+            src="/img/edit_ico.png"
+            width="30"
+            height="30"
+            alt="Иконка редактирования"
+        />
+        </Link>
+        </Col>
+        <Col>
+          <Link
         onClick={() => handleAddClick()}
         style={{
             textDecoration: "none",
@@ -273,6 +415,9 @@ const handleAddPhoto = (event) => {
             alt="Иконка редактирования"
         />
         </Link>
+        </Col>
+          </Row>
+          <Row style={{marginTop:"1rem"}}>
         <div className="mb-2"> 
                         <Button variant="primary" 
                         onClick={handleSubmit}
@@ -301,6 +446,12 @@ const handleAddPhoto = (event) => {
         <Row>
         <Col md={6}>
             <Card.Title>Добавленные фотографии</Card.Title>
+            {imageUrls.length === 0 ? (
+          <Row style={{justifyContent: "center", alignItems: "center",marginTop:"13rem",marginBottom:"13rem"}}>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner></Row>
+        ) : (
             <ListGroup>
               {tour?.tour?.images?.map((photo, index) => (
                 <Card.Text className="text-center" style={{background:"#F3F6FB",borderRadius: "10px",textDecoration: "none",
@@ -313,12 +464,13 @@ const handleAddPhoto = (event) => {
                     <h1 style={{ fontSize: "17px",padding:'1rem'}}>{photo.filename}</h1>
               <div style={{justifyContent: "space-end"}}>
                 <img
-              src={`/img/${photo.filename}.png`}
+              src={imageUrls[index]}
               width="40"
               height="40"
               alt="Photo icon"
               style={{marginRight:'1rem'}}
             />
+                <Link onClick={() => handleDel(photo)}>
                 <img
                   src="/img/del_ico.png"
                   width="40"
@@ -326,14 +478,23 @@ const handleAddPhoto = (event) => {
                   alt="TO icon"
                   style={{marginRight:'1rem'}}
                 />
+                </Link>
                 </div>
             </Card.Text>
             ))}
             </ListGroup>
+        )}
           </Col>
           <Col md={6}>
             <Card.Title>Добавить фотографию</Card.Title>
-            <Form.Control type="file" onChange={handleAddPhoto} />
+            <Form.Control type="file" 
+            onChange={(e) => handleAddPhoto(e)}
+             />
+            <Button variant="primary" style={{marginTop:"1rem"}}
+                        onClick={uploadFile}
+                        >
+                        Добавить
+                        </Button>
           </Col>
         </Row>
         </Card.Body>

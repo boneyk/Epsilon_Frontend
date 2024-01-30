@@ -25,16 +25,16 @@ export const MangerEdit = () => {
   
 
   useEffect(() => {
-    axios.get(`/api/tours`)
-      .then((response) => {
-        // Обработка успешного ответа
-        console.log("Ответ сервера:", response.data);
-        setTours(response.data);
-      })
-      .catch((error) => {
-        // Обработка ошибки
-        console.error("Ошибка запроса:", error);
-      });
+    axios.get(`/api/manager/${token}`)
+    .then((response) => {
+      // Обработка успешного ответа
+      console.log("Ответ сервера:", response.data);
+      setTours(response.data);
+    })
+    .catch((error) => {
+      // Обработка ошибки
+      console.error("Ошибка запроса:", error);
+    });
   }, []); // Добавляем token в зависимости useEffect
 
 //   const handleCardClick = (tour) => {
