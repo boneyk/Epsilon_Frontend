@@ -34,7 +34,7 @@ export const Tours = () => {
 
   useEffect(() => {
     console.log("токен:", token);
-    axios.get("/api/tours", {
+    axios.get("http://89.223.122.223:8080/api/tours", {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -87,7 +87,7 @@ export const Tours = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.get(`api/tours/filtered?country_to=${destination}&date_start=${departureDate}&nights=${nights}&amount=${tourists}`, {
+    axios.get(`http://89.223.122.223:8080/api/tours/filtered?country_to=${destination}&date_start=${departureDate}&nights=${nights}&amount=${tourists}`, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

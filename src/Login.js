@@ -61,7 +61,7 @@ const blurHandler = (e) => {
     };
     console.log(requestData); // выводим requestData в консоль (для проверки)
     axios
-      .post("/api/auth", requestData, {
+      .post("http://89.223.122.223:8080/api/auth", requestData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

@@ -27,7 +27,7 @@ const [info, setInfo] = useState([]);
 
 useEffect(() => {
     axios
-      .get(`/api/manager/trip/${trip_id}?token=${token}`)
+      .get(`http://89.223.122.223:8080/api/manager/trip/${trip_id}?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);

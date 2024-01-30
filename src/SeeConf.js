@@ -29,7 +29,7 @@ const [confinfo, setInfo] = useState([]);
 
 useEffect(() => {
   axios
-    .post("/api/trip",info,{
+    .post("http://89.223.122.223:8080/api/trip",info,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

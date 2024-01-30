@@ -25,7 +25,7 @@ export const ManagerMain = () => {
   console.log("токен из хранилища:", token);
 
   useEffect(() => {
-    axios.get(`/api/manager/${token}/trips`)
+    axios.get(`http://89.223.122.223:8080/api/manager/${token}/trips`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -46,7 +46,7 @@ export const ManagerMain = () => {
   const handleConfClick = (tour) => {
     const decision = true;
     axios
-      .post(`/api/manager?token=${token}&decision=${decision}&trip_id=${tour.id}`)
+      .post(`http://89.223.122.223:8080/api/manager?token=${token}&decision=${decision}&trip_id=${tour.id}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -61,7 +61,7 @@ export const ManagerMain = () => {
   const handleDel = (tour) => {
     const decision = false;
     axios
-      .post(`/api/manager?token=${token}&decision=${decision}&trip_id=${tour.id}`)
+      .post(`http://89.223.122.223:8080/api/manager?token=${token}&decision=${decision}&trip_id=${tour.id}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);

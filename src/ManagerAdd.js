@@ -45,7 +45,7 @@ const [imageUrls, setImageUrls] = useState([]);
 
 useEffect(() => {
   axios
-    .get(`/api/tours/${tour_id}?token=${token}`,{
+    .get(`http://89.223.122.223:8080/api/tours/${tour_id}?token=${token}`,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -135,7 +135,7 @@ const handleSubmit = (event) => {
     };
     console.log("Запрос:", requestData);
   axios
-    .patch(`/api/manager/edit/${tour_id}?token=${token}`,requestData,{
+    .patch(`http://89.223.122.223:8080/api/manager/edit/${tour_id}?token=${token}`,requestData,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -156,7 +156,7 @@ const handleSubmit = (event) => {
     };
     console.log("Запрос:", newDate);
     axios
-    .patch(`/api/manager/edit/${tour_id}/date/${date_id}?token=${token}`,requestData,{
+    .patch(`http://89.223.122.223:8080/api/manager/edit/${tour_id}/date/${date_id}?token=${token}`,requestData,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -192,7 +192,7 @@ const handleSaveClick = () => {
 
 const handleDel = (photo) => {
   axios
-    .delete(`/api/manager/edit/${tour_id}/image/${photo.id}?token=${token}`,{
+    .delete(`http://89.223.122.223:8080/api/manager/edit/${tour_id}/image/${photo.id}?token=${token}`,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -223,7 +223,7 @@ const imagesListRef = ref(storage, "img/");
   console.log("иМЯ картинки:", requestData);
 
     axios
-    .post(`/api/manager/edit/${tour_id}/image?token=${token}`,requestData,{
+    .post(`http://89.223.122.223:8080/api/manager/edit/${tour_id}/image?token=${token}`,requestData,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

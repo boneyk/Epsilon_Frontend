@@ -24,7 +24,7 @@ export const Busket = () => {
 
 
   useEffect(() => {
-    axios.get(`/api/trip/history?token=${token}`)
+    axios.get(`http://89.223.122.223:8080/api/trip/history?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);

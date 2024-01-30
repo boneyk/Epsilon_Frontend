@@ -25,7 +25,7 @@ export const ManagerFree = () => {
   
 
   useEffect(() => {
-    axios.get(`/api/manager?token=${token}`)
+    axios.get(`http://89.223.122.223:8080/api/manager?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -35,7 +35,7 @@ export const ManagerFree = () => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
       });
-    axios.get(`/api/manager/${token}`)
+    axios.get(`http://89.223.122.223:8080/api/manager/${token}`)
     .then((response) => {
       // Обработка успешного ответа
       console.log("Ответ сервера:", response.data);
@@ -52,7 +52,7 @@ export const ManagerFree = () => {
     const tour_id = localStorage.getItem("tour_id");
     const token = localStorage.getItem("token");
     axios
-      .delete(`/api/manager/${token}/from/${tour_id}`)
+      .delete(`http://89.223.122.223:8080/api/manager/${token}/from/${tour_id}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -76,7 +76,7 @@ export const ManagerFree = () => {
     const tour_id = localStorage.getItem("tour_id");
     const token = localStorage.getItem("token");
     axios
-      .post(`/api/manager/${token}/to/${tour_id}`)
+      .post(`http://89.223.122.223:8080/api/manager/${token}/to/${tour_id}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);

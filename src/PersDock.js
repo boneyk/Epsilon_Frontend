@@ -152,7 +152,7 @@ export const PersDock = () => {
 
     useEffect(() => {
         console.log("Запрос:", doc_token);
-        axios.get(`/api/documents/person?doc_token=${doc_token}`)
+        axios.get(`http://89.223.122.223:8080/api/documents/person?doc_token=${doc_token}`)
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
@@ -172,7 +172,7 @@ export const PersDock = () => {
         "phone_number": phone,
         };
     if(phone.length == 11){
-    axios.post(`/api/documents/personalInfo?doc_token=${doc_token}`,requestData,{
+    axios.post(`http://89.223.122.223:8080/api/documents/personalInfo?doc_token=${doc_token}`,requestData,{
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -214,7 +214,7 @@ export const PersDock = () => {
       if(seria.length === 4 && number.length === 6
          && (sex.toLowerCase() === "мужской" || sex.toLowerCase() === "женский" || sex.toLowerCase() === "жен." || sex.toLowerCase() === "муж.")
          && fio === name){
-      axios.post(`/api/documents/passport?doc_token=${doc_token}`, requestData, {
+      axios.post(`http://89.223.122.223:8080/api/documents/passport?doc_token=${doc_token}`, requestData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -245,7 +245,7 @@ export const PersDock = () => {
     };
 
     const handleDelPass = (event) => {
-      axios.delete(`/api/documents/passport?doc_token=${doc_token}`)
+      axios.delete(`http://89.223.122.223:8080/api/documents/passport?doc_token=${doc_token}`)
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);
@@ -267,7 +267,7 @@ export const PersDock = () => {
     };
 
     const handleEditPass = (event) => {
-      axios.delete(`/api/documents/passport?doc_token=${doc_token}`)
+      axios.delete(`http://89.223.122.223:8080/api/documents/passport?doc_token=${doc_token}`)
           .then((response) => {
             // Обработка успешного ответа
             console.log("Ответ сервера:", response.data);

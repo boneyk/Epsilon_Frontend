@@ -45,7 +45,7 @@ export const ManagerProf = () => {
       const token = localStorage.getItem("token");
       // выводим requestData в консоль (для проверки)
       axios
-        .patch(`/api/users/info?token=${token}`, requestData, {
+        .patch(`http://89.223.122.223:8080/api/users/info?token=${token}`, requestData, {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -75,7 +75,7 @@ export const ManagerProf = () => {
     const token = localStorage.getItem("token");
     // выводим requestData в консоль (для проверки)
     axios
-      .patch(`/api/users/info?token=${token}`, requestData, {
+      .patch(`http://89.223.122.223:8080/api/users/info?token=${token}`, requestData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -107,7 +107,7 @@ export const ManagerProf = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get(`/api/users/info?token=${token}`, {
+      .get(`http://89.223.122.223:8080/api/users/info?token=${token}`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

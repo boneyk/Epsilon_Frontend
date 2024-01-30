@@ -89,7 +89,7 @@ export const Reg = () => {
     };
     console.log(requestData); // выводим requestData в консоль (для проверки)
     axios
-      .post("/api/auth/reg", requestData, {
+      .post("http://89.223.122.223:8080/api/auth/reg", requestData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",

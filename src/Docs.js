@@ -15,7 +15,7 @@ export const Docs = () => {
   console.log("токен из хранилища:", token);
 
   useEffect(() => {
-    axios.get(`/api/documents?token=${token}`)
+    axios.get(`http://89.223.122.223:8080/api/documents?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -34,7 +34,7 @@ export const Docs = () => {
 
   const handleDel = (tour) => {
     axios
-      .delete(`/api/documents?token=${token}&doc_token=${tour.token}`)
+      .delete(`http://89.223.122.223:8080/api/documents?token=${token}&doc_token=${tour.token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -51,7 +51,7 @@ export const Docs = () => {
   };
   const handleAddClick = (tour) => {
     axios
-      .post(`/api/documents/add?token=${token}`)
+      .post(`http://89.223.122.223:8080/api/documents/add?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);

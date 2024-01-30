@@ -23,7 +23,7 @@ export const Favorite = () => {
   const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/tours/favorite?token=${token}`)
+    axios.get(`http://89.223.122.223:8080/api/tours/favorite?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -65,7 +65,7 @@ export const Favorite = () => {
 
   const handleDel = (tour) => {
     axios
-      .delete(`/api/tours/favorite/${tour.id}/from/${token}`)
+      .delete(`http://89.223.122.223:8080/api/tours/favorite/${tour.id}/from/${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);

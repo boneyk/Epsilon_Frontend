@@ -34,7 +34,7 @@ export const TourLending = () => {
     
 
     useEffect(() => {
-      axios.get(`/api/tours/${tour_id}?token=${token}`)
+      axios.get(`http://89.223.122.223:8080/api/tours/${tour_id}?token=${token}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
@@ -73,7 +73,7 @@ export const TourLending = () => {
         event.preventDefault();
         
         axios
-          .patch(`/api/tours/favorite/${tour_id}/to/${token}`,{
+          .patch(`http://89.223.122.223:8080/api/tours/favorite/${tour_id}/to/${token}`,{
             headers: {
               "Access-Control-Allow-Origin": "*",
               "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
