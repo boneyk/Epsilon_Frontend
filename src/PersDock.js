@@ -3,6 +3,7 @@ import "./fave.css"
 import { Container, Row, Col, Card, Button,Form } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
+import Navbar_man from './components/navbar_man';
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,6 +25,8 @@ export const PersDock = () => {
     const [dateG, setDateG] = useState("");
     const [whoG, setWhoG] = useState("");
     const [reg, setReg] = useState("");
+    const role = localStorage.getItem("role");
+
 
     const handleFioChange = (event) => {
       const { value } = event.target;
@@ -244,7 +247,7 @@ export const PersDock = () => {
 
     return (
         <>
-        <Navibar />
+     {role === "MANAGER" ? <Navbar_man /> : <Navibar />}
         <Container>
         <ToastContainer />
 
@@ -277,16 +280,17 @@ export const PersDock = () => {
                   />
                 </Form.Group>
                 {(phoneE) && <div style ={{color:'red'}}>{error}</div>}
-                      <div className="mb-2">
-                        <Button variant="primary" 
-                        onClick={handleSubmitPersInfo}
-                        >
-                        Сохранить
-                        </Button>{' '}
-                        <Button variant="secondary" onClick={handleCancel} >
-                        Отменить
-                        </Button>
-                    </div>
+                {role === "USER" && (
+                  <div className="mb-2">
+                    <Button variant="primary" onClick={handleSubmitPersInfo}>
+                      Сохранить
+                    </Button>{' '}
+                    <Button variant="secondary" onClick={handleCancel}>
+                      Отменить
+                    </Button>
+                  </div>
+                )}
+
                 </Card>
             </Col>
             </Row>
@@ -453,7 +457,7 @@ export const PersDock = () => {
                       </Form.Group>
 
 
-                      <div className="mb-2"> 
+                      {role === "USER" && (<div className="mb-2"> 
                         <Button variant="primary" 
                         onClick={handleSubmitPass}
                         >
@@ -465,7 +469,7 @@ export const PersDock = () => {
                         <Button variant="secondary">
                         Редактировать
                         </Button>
-                    </div>
+                    </div> )}
                     </Form>
             </Card.Body>
             </Card>

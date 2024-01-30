@@ -21,6 +21,7 @@ import { MangerEdit } from "./ManagerEdit";
 import { ManagerAdd } from "./ManagerAdd";
 import { ManagerFree } from "./ManagerFree";
 import { ManagerProf } from "./ManagerProf";
+import { ManagerConfInfo } from "./ManagerConfInfo";
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
       <Route path="api/manager/add" element={<ManagerAdd/>} />
       <Route path="api/manager/free" element={<ManagerFree/>} />
       <Route path="api/manager/info" element={<ManagerProf/>} />
+      <Route path="api/manager/conf" element={<ManagerConfInfo/>} />
       </Routes>
       </Router>
       <Fotter/>

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 function formatPrice(number) {
   // Преобразование числа в строку и добавление разделителей для тысяч
-  if (typeof number !== 'undefined' && !isNaN(number)) {
+  if (typeof number !== null ) {
     // Преобразование числа в строку и добавление разделителей для тысяч
     let priceString = number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$& ');
     return priceString;
@@ -19,6 +19,7 @@ function formatPrice(number) {
 
 export const ManagerMain = () => {
   const [fave, setFave] = useState([]);
+  const [status, setStatus] = useState("MODERATION");
   const token = localStorage.getItem("token");
   let tour_id = localStorage.getItem("tour_id");
   console.log("токен из хранилища:", token);
@@ -34,24 +35,42 @@ export const ManagerMain = () => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
       });
-  }, [fave]); // Добавляем token в зависимости useEffect
+  }, []); // Добавляем token в зависимости useEffect
 
   const handleToClick = (tour) => {
-    localStorage.setItem("tour_id",tour.id)
+    localStorage.setItem("trip_id",tour.id);
+    window.location.href = `/api/manager/conf`;
   };
 
-  const handleDel = (tour) => {
+
+  const handleConfClick = (tour) => {
+    const decision = true;
     axios
-      .delete(`/api/tours/favorite/${tour.id}/from/${token}`)
+      .post(`/api/manager?token=${token}&decision=${decision}&trip_id=${tour.id}`)
       .then((response) => {
         // Обработка успешного ответа
         console.log("Ответ сервера:", response.data);
-        setFave(fave.filter(item => item.id !== tour.id));
       })
       .catch((error) => {
         // Обработка ошибки
         console.error("Ошибка запроса:", error);
       });
+      setStatus("ACCEPTED");
+  };
+
+  const handleDel = (tour) => {
+    const decision = false;
+    axios
+      .post(`/api/manager?token=${token}&decision=${decision}&trip_id=${tour.id}`)
+      .then((response) => {
+        // Обработка успешного ответа
+        console.log("Ответ сервера:", response.data);
+      })
+      .catch((error) => {
+        // Обработка ошибки
+        console.error("Ошибка запроса:", error);
+      });
+      setStatus("DENIED");
   };
 
   return (
@@ -86,8 +105,9 @@ export const ManagerMain = () => {
                 marginTop: "10px",
                 marginBottom: "10px"
               }}
-              to="/api/manager/add"
-              onClick={() => handleToClick(tour)}>
+              // to="/api/manager/add"
+              onClick={() => handleToClick(tour)}
+              >
               <div style={{ alignItems: "center" }}>
                 <h1 style={{ fontSize: "20px", marginLeft: "10px" }}>
                   Логин пользователя: {tour?.login}
@@ -96,8 +116,11 @@ export const ManagerMain = () => {
                 {tour?.country}, {tour?.city}
                 </h1>
                 <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
-                Стоимость: {formatPrice(tour?.price_per_one)} ₽ 
+                Стоимость: {formatPrice(tour?.price)} ₽ 
                 </h1>
+                {/* <h1 style={{ fontSize: "15px", marginLeft: "10px" }}>
+                Статус заказа: {status} 
+                </h1> */}
               </div>
               </Link>
               </div>
@@ -112,7 +135,7 @@ export const ManagerMain = () => {
                   marginTop: "10px",
                   marginBottom: "10px"
                 }}
-                // onClick={() => handleDel(docs)}
+                onClick={() => handleDel(tour)}
               >
                 Отказать
                 <img
@@ -132,8 +155,7 @@ export const ManagerMain = () => {
                   marginTop: "10px",
                   marginBottom: "10px"
                 }}
-                to="/api/manager/add"
-                onClick={() => handleToClick(tour)}
+                onClick={() => handleConfClick(tour)}
                 >Одобрить
                 <img
                   src="/img/conf.png"

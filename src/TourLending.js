@@ -71,15 +71,19 @@ export const TourLending = () => {
           });
       };
 
+      const [price, setPrice] = useState(null);
+
       const handleBuy = (event) => {
         event.preventDefault();
+        setPrice(tourinfo.tour?.price_per_one * selectedPersons.length);
         console.log("Ответ pers:", selectedPersons); 
         console.log("Ответ date:", selectedDate);
         const requestData = {
             "date_id": selectedDate,
             "tour_id": tour_id,
             "token": token,
-            "person_list": selectedPersons
+            "person_list": selectedPersons,
+            "price": tourinfo.tour?.price_per_one * selectedPersons.length
           };
           // Преобразование в строку и сохранение в localStorage
         if(selectedDate !== null && selectedPersons.length > 0){
@@ -149,7 +153,7 @@ export const TourLending = () => {
             <Container className="d-flex justify-content-center align-items-center">
             <ToastContainer />
                 <Row>
-                    <Image src={`/img/${tourinfo.tour?.images[1].filename}.jpg`} fluid />
+                    <Image src={`/img/${tourinfo.tour?.images[1].filename}.png`} fluid />
                     <Button
                         onClick={handleAdd}
                         style={{

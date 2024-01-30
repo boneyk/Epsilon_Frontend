@@ -89,7 +89,7 @@ export const Docs = () => {
         <h1 style={{ fontSize: "20px", marginRight: "10px" }}>Добавить</h1> {/* Заменяем marginLeft на marginRight */}
         <img
             src="/img/edit_ico.png"
-            width="20"
+            width="30"
             height="30"
             alt="Иконка редактирования"
         />

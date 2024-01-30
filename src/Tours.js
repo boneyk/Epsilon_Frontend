@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Card,Button,Form,Navbar, Tab,Tabs  } from "react-bootstrap";
+import { Container, Row, Col, Card,Button,Form,Navbar, Tab,Tabs,Spinner  } from "react-bootstrap";
 import Navibar from "./components/navibar";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { getDownloadURL, ref, listAll,
+  list } from 'firebase/storage';
+  import { storage } from "./firebase";
 
 
 function formatPrice(number) {
@@ -25,6 +28,9 @@ export const Tours = () => {
   const [departureDate, setDepartureDate] = useState('');
   const [nights, setNights] = useState('');
   const [tourists, setTourists] = useState('');
+  const [imageUrls, setImageUrls] = useState([]);
+
+
 
   useEffect(() => {
     console.log("токен:", token);
@@ -38,12 +44,36 @@ export const Tours = () => {
       // Обработка успешного ответа
       console.log("Ответ сервера:", response.data);
       setTours(response.data); // Установка полученных данных в состояние
+      loadImages(response.data); // Вызов функции для загрузки изображений
     })
     .catch((error) => {
       // Обработка ошибки
       console.error("Ошибка запроса:", error);
     });
-  }, []);
+  }, []); // Пустой массив зависимостей, чтобы useEffect запускался только один раз
+  
+  const loadImages = async (toursData) => {
+    const urls = [];
+    for (const tour of toursData) {
+      const imageName = tour.images[0].filename;
+      const imagesListRef = ref(storage, 'img/tour_icons');
+      try {
+        const response = await listAll(imagesListRef);
+        for (const item of response.items) {
+          if (item.name === `${imageName}.png`) {
+            const url = await getDownloadURL(item);
+            console.log("Картинка:", url);
+            urls.push(url);
+          }
+        }
+      } catch (error) {
+        console.error('Ошибка при загрузке изображения', error);
+      }
+    }
+    console.log("Картинки:", urls);
+    setImageUrls(urls);
+  };
+  
 
   const handleCardClick = (tour) => {
     // (token === null) ? setStatus(false) : setStatus(true);
@@ -159,20 +189,27 @@ export const Tours = () => {
       <ToastContainer />
         <Container></Container>
         {/* <h2 style={{ paddingLeft: '6rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Наши туры:</h2> */}
-        <Row style={{justifyContent: "center", alignItems: "center"}}>
-          {tours?.map((tour, index) => (
-            <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
-              <Card style={{ width: '18rem',background:'#DDDFEB',borderRadius:'3rem' }} onClick={() => handleCardClick(tour)}>
-                <Card.Img src={`/img/${tour.images[0].filename}.png`} />
-                <Card.Body>
-                  <Card.Title>{tour.name}</Card.Title>
-                  <Card.Text>{tour.tour_type}</Card.Text>
-                  <Card.Text style={{marginLeft:'10px'}}>Стоимость: {formatPrice(tour.price_per_one)} ₽</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        {imageUrls.length === 0 ? (
+          <Row style={{justifyContent: "center", alignItems: "center",marginTop:"4rem",marginBottom:"4rem"}}>
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner></Row>
+        ) : (
+          <Row style={{justifyContent: "center", alignItems: "center"}}>
+            {tours?.map((tour, index) => (
+              <Col xs="auto" style={{paddingBottom: '1rem'}} key={index}>
+                <Card style={{ width: '18rem',background:'#DDDFEB',borderRadius:'3rem' }} onClick={() => handleCardClick(tour)}>
+                  <Card.Img src={imageUrls[index]} />
+                  <Card.Body>
+                    <Card.Title>{tour.name}</Card.Title>
+                    <Card.Text>{tour.tour_type}</Card.Text>
+                    <Card.Text style={{marginLeft:'10px'}}>Стоимость: {formatPrice(tour.price_per_one)} ₽</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Container>
     </>
   );

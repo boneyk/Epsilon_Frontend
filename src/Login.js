@@ -72,13 +72,16 @@ const blurHandler = (e) => {
         console.log("Ответ сервера:", response.data);
         if (response.status === 200){ 
           if(response.data.role === "MANAGER"){
+            localStorage.setItem("role","MANAGER");
             window.location.href = '/api/manager/tours';
             localStorage.setItem("token", response.data.token);
             const token = localStorage.getItem("token");
             console.log("токен из хранилища:", token);
           }else if(response.data.role === "ADMIN"){
+            localStorage.setItem("role","ADMIN");
             window.location.href = '/api/admin/';
           }else{
+            localStorage.setItem("role","USER");
           window.location.href = '/api/tours';
           localStorage.setItem("token", response.data.token);
           const token = localStorage.getItem("token");

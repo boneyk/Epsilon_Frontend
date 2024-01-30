@@ -26,10 +26,18 @@ export const ManagerAdd = () => {
 const [tour, setInfo] = useState([]);
 const tour_id = localStorage.getItem("tour_id");
 const token = localStorage.getItem("token");
+const [dates, setDates] = useState([]);
+
+const [name, setName] = useState("");
+const [country, setCountry] = useState("");
+const [city, setCity] = useState("");
+const [tour_type, setType] = useState("");
+const [capacity, setCapacity] = useState(0);
+const [price, setPrice] = useState(0);
+const [description, setDescription] = useState("");
 
 
 useEffect(() => {
-  console.log("Запрос:", tour_id);
   axios
     .get(`/api/tours/${tour_id}?token=${token}`,{
       headers: {
@@ -39,6 +47,14 @@ useEffect(() => {
     }).then((response) => {
       console.log("Ответ сервера:", response.data);
       setInfo(response.data);
+      setDates(response.data.tour.date);
+      setName(response.data.tour.name);
+      setCountry(response.data.tour.country);
+      setCity(response.data.tour.city);
+      setCapacity(response.data.tour.capacity);
+      setPrice(response.data.tour.price_per_one);
+      setDescription(response.data.tour.description);
+      setType(response.data.tour.tour_type);
     })
     .catch((error) => {
       console.error("Ошибка запроса:", error);
@@ -46,6 +62,73 @@ useEffect(() => {
 }, []);
 
 const [photos, setPhotos] = useState([]);
+
+
+const handleNameChange = (event) => {
+  setName(event.target.value);
+
+};
+const handleCountryChange = (event) => {
+  setCountry(event.target.value);
+
+};
+const handleCityChange = (event) => {
+  setCity(event.target.value);
+
+};
+const handleTypeChange = (event) => {
+  setType(event.target.value);
+
+};
+const handleCapacityChange = (event) => {
+  setCapacity(event.target.value);
+
+};
+const handlePriceChange = (event) => {
+  setPrice(event.target.value);
+
+};
+const handleDescChange = (event) => {
+  setDescription(event.target.value);
+
+};
+
+const handleSubmit = (event) => {
+  const requestData = {
+    "name": name,
+    "country": country,
+    "city": city,
+    "tour_type": tour_type,
+    "capacity": capacity,
+    "price_per_one": price,
+    "description": description,
+    };
+    console.log("Запрос:", requestData);
+  axios
+    .patch(`/api/manager/edit/${tour_id}?token=${token}`,requestData,{
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+      },
+    }).then((response) => {
+      console.log("Ответ сервера:", response.data);
+      setInfo(response.data);
+      toast("Информация успешно обновлена", { autoClose: 4000 });
+    })
+    .catch((error) => {
+      console.error("Ошибка запроса:", error);
+    });
+};
+
+const handleAddClick = () => {
+  console.log("Массив дат:", dates);
+  const newDate = {
+    dateStart: "",
+    dateEnd: "",
+  };
+  setDates((prevDates) => [...prevDates, newDate]);
+};
+
 
 const handleAddPhoto = (event) => {
   // Логика добавления фотографий
@@ -56,6 +139,7 @@ const handleAddPhoto = (event) => {
       <Navbar_man />
       <Container style={{ paddingTop: '2rem', paddingBottom: '2rem',justifyContent: "center", alignItems: "center" }}>
         <Container></Container>
+        <ToastContainer />
         <h2 style={{ paddingLeft: '3rem', paddingBottom: '1rem',justifyContent: "center", alignItems: "center"  }}>Менеджер • Редактирование тура</h2>
       <Row style={{justifyContent: "center", alignItems: "center"}}>
         <Col xs="auto" className="p-0" md={8} lg={8}>
@@ -70,7 +154,8 @@ const handleAddPhoto = (event) => {
           <Form.Label>Название тура:</Form.Label>
           <Form.Control
             type="text"
-            value={tour?.tour?.name}
+            value={name}
+            onChange={handleNameChange}
           />
         </Form.Group>
         <Row>
@@ -79,7 +164,8 @@ const handleAddPhoto = (event) => {
               <Form.Label>Страна:</Form.Label>
               <Form.Control
                 type="text"
-                value={tour?.tour?.country}
+                value={country}
+                onChange={handleCountryChange}
               />
             </Form.Group>
           </Col>
@@ -88,7 +174,8 @@ const handleAddPhoto = (event) => {
               <Form.Label>Город:</Form.Label>
               <Form.Control
                 type="text"
-                value={tour?.tour?.city}
+                value={city}
+                onChange={handleCityChange}
               />
             </Form.Group>
           </Col>
@@ -97,16 +184,18 @@ const handleAddPhoto = (event) => {
           <Form.Label>Тип тура:</Form.Label>
           <Form.Control
             type="text"
-            value={tour?.tour?.tour_type}
+            value={tour_type}
+            onChange={handleTypeChange}
           />
         </Form.Group>
         <Row>
           <Col>
             <Form.Group>
-              <Form.Label>Стоимость(руб.):</Form.Label>
+              <Form.Label>Стоимость на 1 человека(руб.):</Form.Label>
               <Form.Control
                 type="text"
-                value={tour?.tour?.price_per_one}
+                value={price}
+                onChange={handlePriceChange}
               />
             </Form.Group>
           </Col>
@@ -115,7 +204,8 @@ const handleAddPhoto = (event) => {
               <Form.Label>Вместительность(чел.):</Form.Label>
               <Form.Control
                 type="text"
-                value={tour?.tour?.capacity}
+                value={capacity}
+                onChange={handleCapacityChange}
               />
             </Form.Group>
           </Col>
@@ -124,27 +214,24 @@ const handleAddPhoto = (event) => {
           <Form.Label>Описание тура:</Form.Label>
           <Form.Control
             as="textarea"
-            value={tour?.tour?.description}
-            readOnly
+            value={description}
+            onChange={handleDescChange}
           />
         </Form.Group>
-        {tour?.tour?.date?.map((date, index) => (
+        {dates.map((date, index) => (
         <Row key={index}>
           <Col>
             <Form.Group>
               <Form.Label>Дата начала:</Form.Label>
               <Form.Control
-                type="text"
-                value={date.dateStart}
-                // onChange={(e) => {
-                //   const newDate = { ...date, dateStart: e.target.value };
-                //   const newDates = [...tour.date];
-                //   newDates[index] = newDate;
-                //   setTour((prevTour) => ({
-                //     ...prevTour,
-                //     date: newDates,
-                //   }));
-                // }}
+                type="date"
+                defaultValue={date.dateStart}
+                onChange={(e) => {
+                  const newDate = { ...date, dateStart: e.target.value };
+                  const newDates = [...dates];
+                  newDates[index] = newDate;
+                  setDates(newDates);
+                }}
               />
             </Form.Group>
           </Col>
@@ -152,17 +239,14 @@ const handleAddPhoto = (event) => {
             <Form.Group>
               <Form.Label>Дата конца:</Form.Label>
               <Form.Control
-                type="text"
-                value={date.dateEnd}
-                // onChange={(e) => {
-                //   const newDate = { ...date, dateEnd: e.target.value };
-                //   const newDates = [...tour.date];
-                //   newDates[index] = newDate;
-                //   setTour((prevTour) => ({
-                //     ...prevTour,
-                //     date: newDates,
-                //   }));
-                // }}
+                type="date"
+                defaultValue={date.dateEnd}
+                onChange={(e) => {
+                  const newDate = { ...date, dateEnd: e.target.value };
+                  const newDates = [...dates];
+                  newDates[index] = newDate;
+                  setDates(newDates);
+                }}
               />
             </Form.Group>
           </Col>
@@ -171,7 +255,7 @@ const handleAddPhoto = (event) => {
 
         <Row>
         <Link
-        // onClick={() => handleAddClick()}
+        onClick={() => handleAddClick()}
         style={{
             textDecoration: "none",
             color: "black",
@@ -191,15 +275,12 @@ const handleAddPhoto = (event) => {
         </Link>
         <div className="mb-2"> 
                         <Button variant="primary" 
-                        // onClick={handleSubmit}
+                        onClick={handleSubmit}
                         >
                         Сохранить
                         </Button>{' '}
                         <Button variant="secondary">
                         Отменить
-                        </Button>{' '}
-                        <Button variant="secondary">
-                        Изменить
                         </Button>
                     </div>
         </Row>
