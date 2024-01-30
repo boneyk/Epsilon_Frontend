@@ -367,7 +367,7 @@ const imagesListRef = ref(storage, "img/");
           </Col>
         </Row>
       ))}
-      <Row style={{
+      {/* <Row style={{
             textDecoration: "none",
             color: "black",
             display: "flex",
@@ -416,7 +416,7 @@ const imagesListRef = ref(storage, "img/");
         />
         </Link>
         </Col>
-          </Row>
+          </Row> */}
           <Row style={{marginTop:"1rem"}}>
         <div className="mb-2"> 
                         <Button variant="primary" 
