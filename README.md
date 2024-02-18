@@ -25,3 +25,4 @@
 * удалять администраторов
 
 Приложение работает на основе rest api запросов на сервер с бэкендом.
+Дизайн сайта можно посмотреть по [ссылке](https://www.figma.com/file/rHpEwtFrzliFDV7DWhRipr/Турагентство?type=design&node-id=0-1&mode=design&t=oM5oeTNMnyB4hk8I-0)
